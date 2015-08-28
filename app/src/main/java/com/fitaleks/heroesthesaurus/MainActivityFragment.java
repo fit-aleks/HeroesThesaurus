@@ -18,14 +18,20 @@ import java.util.concurrent.TimeUnit;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.android.view.ViewObservable;
 import rx.schedulers.Schedulers;
 
 public class MainActivityFragment extends Fragment {
+    private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
 
-    private CharatersListAdapter mAdapter;
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
+
+    private CharatersListAdapter mAdapter;
+    private LinearLayoutManager mLinearLayoutManager;
+    private boolean loading     = true;
+    private int previousTotal   = 0;
 
     private Observable<List<Character>> mListObservable;
 
@@ -36,19 +42,24 @@ public class MainActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mListObservable = getObservable();
+    }
+
+    private Observable<List<Character>> getObservable() {
         final long curTime = System.currentTimeMillis();
-        mListObservable = NetworkHelper.getRestAdapter()
-                .getCharacters(NetworkHelper.MARVEL_PUBLIC_KEY, "name", curTime, NetworkHelper.getHash(curTime))
+        return NetworkHelper.getRestAdapter()
+                .getCharacters("name", curTime, NetworkHelper.getHash(curTime), Character.getCharactersCount())
                 .timeout(15, TimeUnit.SECONDS)
                 .retry(3)
                 .onErrorResumeNext(Observable.<List<Character>>empty())
                 .flatMap(Observable::from)
                 .doOnNext(Character::saveModel)
                 .toSortedList()
+                .distinct()
                 .cache()
                 .subscribeOn(Schedulers.io());
-
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,12 +67,48 @@ public class MainActivityFragment extends Fragment {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, rootView);
         mAdapter = new CharatersListAdapter(new ArrayList<>());
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLinearLayoutManager);
+        recyclerView.addOnScrollListener(listen);
+
         recyclerView.setAdapter(mAdapter);
 
-        ViewObservable.bindView(recyclerView, mListObservable).subscribe(this::updateAdapter);
+        ViewObservable.bindView(recyclerView, mListObservable)
+                .subscribe(this::updateAdapter);
         return rootView;
     }
+
+    int firstVisibleItem, visibleItemCount, totalItemCount;
+    private final RecyclerView.OnScrollListener listen = new RecyclerView.OnScrollListener() {
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+        }
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            visibleItemCount = recyclerView.getChildCount();
+            totalItemCount = mLinearLayoutManager.getItemCount();
+            firstVisibleItem = mLinearLayoutManager.findFirstVisibleItemPosition();
+
+            if (loading) {
+                if (totalItemCount > previousTotal) {
+                    loading = false;
+                    previousTotal = totalItemCount;
+                }
+            }
+            if (!loading && (totalItemCount - visibleItemCount)
+                    <= (firstVisibleItem + 2)) {
+                // End has been reached
+
+                getObservable().observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(MainActivityFragment.this::updateAdapter);
+
+                loading = true;
+            }
+        }
+    };
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -69,11 +116,12 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void updateAdapter(List<Character> listOfCharacters) {
-        this.mAdapter.update(listOfCharacters);
+        this.mAdapter.addCharacters(listOfCharacters);
     }
 
     @Override
     public void onDestroyView() {
+        recyclerView.removeOnScrollListener(listen);
         super.onDestroyView();
         ButterKnife.unbind(this);
     }

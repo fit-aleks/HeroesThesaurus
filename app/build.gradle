@@ -16,6 +16,9 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "MARVEL_PUB_API_KEY", "\"${MOVIE_DB_API_KEY}\""
+        buildConfigField "String", "MARVEL_SECRET_API_KEY", "\"${MARVEL_SECRET_API_KEY}\""
     }
     buildTypes {
         release {

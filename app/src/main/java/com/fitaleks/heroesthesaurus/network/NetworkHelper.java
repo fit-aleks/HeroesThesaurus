@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.fitaleks.heroesthesaurus.BuildConfig;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
 
@@ -31,8 +33,6 @@ import retrofit.converter.GsonConverter;
 public class NetworkHelper {
     private static final String LOG_TAG = NetworkHelper.class.getSimpleName();
     private static final String MARVEL_ENDPOINT = "http://gateway.marvel.com/v1/public";
-    public static final String MARVEL_PUBLIC_KEY = "your_public_key";
-    public static final String MARVEL_PRIVATE_KEY = "your_private_key";
 
     public static MarvelFetchService getRestAdapter() {
         final Gson gson = new GsonBuilder()
@@ -40,9 +40,13 @@ public class NetworkHelper {
                 .registerTypeAdapterFactory(new MarvelTypeAdapterFactory())
                 .create();
 
+        final RequestInterceptor requestInterceptor =
+                request -> request.addQueryParam("apikey", BuildConfig.MARVEL_PUB_API_KEY);
+
         final RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(MARVEL_ENDPOINT)
                 .setConverter(new GsonConverter(gson))
+                .setRequestInterceptor(requestInterceptor)
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
@@ -87,8 +91,8 @@ public class NetworkHelper {
     }
 
     public static String getHash(final long curTime) {
-        final String toHash = curTime + NetworkHelper.MARVEL_PRIVATE_KEY + NetworkHelper.MARVEL_PUBLIC_KEY;
-        String hashString = null;
+        final String toHash = curTime + BuildConfig.MARVEL_SECRET_API_KEY + BuildConfig.MARVEL_PUB_API_KEY;
+        String hashString;
         try {
             MessageDigest digest = MessageDigest.getInstance("MD5");
             digest.update(toHash.getBytes());
@@ -96,8 +100,8 @@ public class NetworkHelper {
 
             // Create Hex String
             StringBuilder hexString = new StringBuilder();
-            for (int i = 0; i < messageDigest.length; i++) {
-                String h = Integer.toHexString(0xFF & messageDigest[i]);
+            for (byte aMessageDigest : messageDigest) {
+                String h = Integer.toHexString(0xFF & aMessageDigest);
                 while (h.length() < 2)
                     h = "0" + h;
                 hexString.append(h);

@@ -5,4 +5,6 @@
     <string name="action_refresh">Refresh</string>
 
     <string name="content_authority" translatable="false">com.fitaleks.heroesthesaurus</string>
+
+    <string name="pref_loaded_num_of_characters">loaded_num_of_characters</string>
 </resources>

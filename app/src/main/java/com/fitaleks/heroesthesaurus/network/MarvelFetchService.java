@@ -14,6 +14,6 @@ import rx.Observable;
 public interface MarvelFetchService {
 
     @GET("/characters")
-    Observable<List<Character>> getCharacters(@Query("apikey") String apiKey, @Query("orderBy") String orderBy, @Query("ts") long currentTime, @Query("hash") String hash);
+    Observable<List<Character>> getCharacters(@Query("orderBy") String orderBy, @Query("ts") long currentTime, @Query("hash") String hash, @Query("offset") long offset);
 
 }

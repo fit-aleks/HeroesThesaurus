@@ -48,8 +48,8 @@ public class CharatersListAdapter extends RecyclerView.Adapter<CharatersListAdap
         return this.mDataset.size();
     }
 
-    public void update(List<Character> newList) {
-        this.mDataset = newList;
+    public void addCharacters(List<Character> newCharacters) {
+        this.mDataset.addAll(newCharacters);
         notifyDataSetChanged();
     }
 
