@@ -1,14 +1,19 @@
 package com.fitaleks.heroesthesaurus;
 
+import android.content.ContentProviderOperation;
+import android.content.OperationApplicationException;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fitaleks.heroesthesaurus.data.Character;
+import com.fitaleks.heroesthesaurus.database.CharactersProvider;
 import com.fitaleks.heroesthesaurus.network.NetworkHelper;
 
 import java.util.ArrayList;
@@ -48,16 +53,30 @@ public class MainActivityFragment extends Fragment {
     private Observable<List<Character>> getObservable() {
         final long curTime = System.currentTimeMillis();
         return NetworkHelper.getRestAdapter()
-                .getCharacters("name", curTime, NetworkHelper.getHash(curTime), Character.getCharactersCount())
+                //TODO: pass correct number of already loaded characters
+                .getCharacters("name", curTime, NetworkHelper.getHash(curTime), 0)
                 .timeout(15, TimeUnit.SECONDS)
                 .retry(3)
                 .onErrorResumeNext(Observable.<List<Character>>empty())
-                .flatMap(Observable::from)
-                .doOnNext(Character::saveModel)
-                .toSortedList()
-                .distinct()
-                .cache()
+                .doOnNext(this::saveData)
+//                .flatMap(Observable::from)
+//                .doOnNext(Character::saveModel)
+//                .toSortedList()
+//                .distinct()
+//                .cache()
                 .subscribeOn(Schedulers.io());
+    }
+
+    private void saveData(final List<Character> chars) {
+        ArrayList<ContentProviderOperation> batchOperation = new ArrayList<>(chars.size());
+        for (final Character character : chars) {
+            batchOperation.add(character.saveModel());
+        }
+        try {
+            getActivity().getContentResolver().applyBatch(CharactersProvider.AUTHORITY, batchOperation);
+        } catch (RemoteException | OperationApplicationException e) {
+            Log.e(LOG_TAG, "Error applying batch insert", e);
+        }
     }
 
 

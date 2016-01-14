@@ -27,11 +27,14 @@
         <meta-data android:name="AA_MODELS" android:value="com.fitaleks.heroesthesaurus.data.Character"/>
         <!-- ActiveAndroid META -->
 
+        <!--<provider-->
+            <!--android:authorities="@string/content_authority"-->
+            <!--android:name="com.activeandroid.content.ContentProvider"-->
+            <!--android:exported="false"/>-->
         <provider
-            android:authorities="@string/content_authority"
-            android:name="com.activeandroid.content.ContentProvider"
+            android:authorities="com.fitaleks.heroesthesaurus.database.CharactersProvider"
+            android:name="com.fitaleks.heroesthesaurus.provider.CharactersProvider"
             android:exported="false"/>
-
     </application>
 
 </manifest>
