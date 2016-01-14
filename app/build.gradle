@@ -18,8 +18,12 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", "MARVEL_PUB_API_KEY", "\"${MOVIE_DB_API_KEY}\""
-        buildConfigField "String", "MARVEL_SECRET_API_KEY", "\"${MARVEL_SECRET_API_KEY}\""
+        buildConfigField "String", "MARVEL_PUB_API_KEY", "\"e01415b0c05a71c13ee5365dbd7eba9c\""
+        buildConfigField "String", "MARVEL_SECRET_API_KEY", "\"8178214f0d366a56f113e92cf4d00fd601807763\""
+//        buildConfigField "String", "MARVEL_PUB_API_KEY", "\"${MOVIE_DB_API_KEY}\""
+//        buildConfigField "String", "MARVEL_SECRET_API_KEY", "\"${MARVEL_SECRET_API_KEY}\""
+//        buildConfigField "String", "MARVEL_PUB_API_KEY", "\"e01415b0c05a71c13ee5365dbd7eba9c\""
+//        buildConfigField "String", "MARVEL_SECRET_API_KEY", "\"8178214f0d366a56f113e92cf4d00fd601807763\""
     }
     buildTypes {
         release {
@@ -35,7 +39,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.2.2'
+        classpath 'me.tatarka:gradle-retrolambda:3.2.4'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
