@@ -9,5 +9,5 @@ A simple Android application which demonstrates the downloading, persisting of d
 - [Retrofit](http://square.github.io/retrofit/)
 - [RxAndroid](https://github.com/ReactiveX/RxAndroid) 
 - [Butterknife](https://github.com/JakeWharton/butterknife)
-- [ActiveAndroid](https://github.com/pardom/ActiveAndroid)
+- [Schematic](https://github.com/SimonVT/schematic)
 - [retrolambda](https://github.com/evant/gradle-retrolambda)
