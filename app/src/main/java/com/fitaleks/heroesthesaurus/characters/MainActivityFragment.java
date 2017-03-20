@@ -1,44 +1,42 @@
-package com.fitaleks.heroesthesaurus;
+package com.fitaleks.heroesthesaurus.characters;
 
-import android.content.ContentProviderOperation;
-import android.content.OperationApplicationException;
 import android.os.Bundle;
-import android.os.RemoteException;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.fitaleks.heroesthesaurus.R;
 import com.fitaleks.heroesthesaurus.data.Character;
-import com.fitaleks.heroesthesaurus.database.CharactersProvider;
-import com.fitaleks.heroesthesaurus.network.NetworkHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.android.view.ViewObservable;
-import rx.schedulers.Schedulers;
+import butterknife.Unbinder;
 
-public class MainActivityFragment extends Fragment {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+public class MainActivityFragment extends Fragment implements CharactersContract.View {
     private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
 
-    @Bind(R.id.recycler_view)
-    RecyclerView recyclerView;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
     private CharatersListAdapter mAdapter;
     private LinearLayoutManager mLinearLayoutManager;
     private boolean loading     = true;
     private int previousTotal   = 0;
 
-    private Observable<List<Character>> mListObservable;
+    private CharactersContract.Presenter presenter;
+    private Unbinder unbinder;
+
+    public static MainActivityFragment newInstance() {
+        return new MainActivityFragment();
+    }
 
     public MainActivityFragment() {
     }
@@ -47,44 +45,26 @@ public class MainActivityFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mListObservable = getObservable();
+//        mListObservable = getObservable();
     }
 
-    private Observable<List<Character>> getObservable() {
-        final long curTime = System.currentTimeMillis();
-        return NetworkHelper.getRestAdapter()
-                //TODO: pass correct number of already loaded characters
-                .getCharacters("name", curTime, NetworkHelper.getHash(curTime), 0)
-                .timeout(15, TimeUnit.SECONDS)
-                .retry(3)
-                .onErrorResumeNext(Observable.<List<Character>>empty())
-                .doOnNext(this::saveData)
-//                .flatMap(Observable::from)
-//                .doOnNext(Character::saveModel)
-//                .toSortedList()
-//                .distinct()
-//                .cache()
-                .subscribeOn(Schedulers.io());
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.subscribe();
     }
 
-    private void saveData(final List<Character> chars) {
-        ArrayList<ContentProviderOperation> batchOperation = new ArrayList<>(chars.size());
-        for (final Character character : chars) {
-            batchOperation.add(character.saveModel());
-        }
-        try {
-            getActivity().getContentResolver().applyBatch(CharactersProvider.AUTHORITY, batchOperation);
-        } catch (RemoteException | OperationApplicationException e) {
-            Log.e(LOG_TAG, "Error applying batch insert", e);
-        }
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unsubscribe();
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        ButterKnife.bind(this, rootView);
+        unbinder = ButterKnife.bind(this, rootView);
         mAdapter = new CharatersListAdapter(new ArrayList<>());
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLinearLayoutManager);
@@ -92,12 +72,10 @@ public class MainActivityFragment extends Fragment {
 
         recyclerView.setAdapter(mAdapter);
 
-        ViewObservable.bindView(recyclerView, mListObservable)
-                .subscribe(this::updateAdapter);
         return rootView;
     }
 
-    int firstVisibleItem, visibleItemCount, totalItemCount;
+    private int firstVisibleItem, visibleItemCount, totalItemCount;
     private final RecyclerView.OnScrollListener listen = new RecyclerView.OnScrollListener() {
         @Override
         public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -121,8 +99,8 @@ public class MainActivityFragment extends Fragment {
                     <= (firstVisibleItem + 2)) {
                 // End has been reached
 
-                getObservable().observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(MainActivityFragment.this::updateAdapter);
+//                getObservable().observeOn(AndroidSchedulers.mainThread())
+//                        .subscribe(MainActivityFragment.this::updateAdapter);
 
                 loading = true;
             }
@@ -134,14 +112,34 @@ public class MainActivityFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-    private void updateAdapter(List<Character> listOfCharacters) {
-        this.mAdapter.addCharacters(listOfCharacters);
-    }
+//    private void updateAdapter(List<Character> listOfCharacters) {
+//        this.mAdapter.addCharacters(listOfCharacters);
+//    }
 
     @Override
     public void onDestroyView() {
         recyclerView.removeOnScrollListener(listen);
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
+    }
+
+    @Override
+    public void setLoadingIndicator(boolean active) {
+
+    }
+
+    @Override
+    public void showCharacters(List<Character> characters) {
+        mAdapter.addCharacters(characters);
+    }
+
+    @Override
+    public void showLoadingError() {
+        Toast.makeText(getContext(), "loading error", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void setPresenter(CharactersContract.Presenter presenter) {
+        this.presenter = checkNotNull(presenter);
     }
 }

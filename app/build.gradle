@@ -1,10 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: 'com.neenbedankt.android-apt'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    compileSdkVersion 25
+    buildToolsVersion "25.0.1"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -13,13 +12,13 @@ android {
 
     defaultConfig {
         applicationId "com.fitaleks.heroesthesaurus"
-        minSdkVersion 15
-        targetSdkVersion 23
+        minSdkVersion 21
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", "MARVEL_PUB_API_KEY", "\"${MOVIE_DB_API_KEY}\""
-        buildConfigField "String", "MARVEL_SECRET_API_KEY", "\"${MARVEL_SECRET_API_KEY}\""
+        buildConfigField "String", "MARVEL_PUB_API_KEY", apiKeys.pubApiKey
+        buildConfigField "String", "MARVEL_SECRET_API_KEY", apiKeys.secretApiKey
     }
     buildTypes {
         release {
@@ -36,7 +35,6 @@ buildscript {
 
     dependencies {
         classpath 'me.tatarka:gradle-retrolambda:3.2.4'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 
@@ -44,23 +42,25 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    def android_libs_ver = '23.0.0'
-    def schematic_version = '0.6.4'
+ext {
+    android_libs_ver = '25.3.0'
+    schematic_version = '0.6.8'
+}
 
+dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:$android_libs_ver"
     compile "com.android.support:design:$android_libs_ver"
     compile "com.android.support:cardview-v7:$android_libs_ver"
     compile "com.android.support:recyclerview-v7:$android_libs_ver"
+//    compile "com.google.guava:guava:18.0"
 
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
 
-    compile 'io.reactivex:rxandroid:0.25.0'
+    compile 'io.reactivex:rxjava:1.1.8'
+    compile 'io.reactivex:rxandroid:1.2.1'
 
-    compile 'com.jakewharton:butterknife:7.0.1'
-
-    apt "net.simonvt.schematic:schematic-compiler:$schematic_version"
-    compile "net.simonvt.schematic:schematic:$schematic_version"
+    compile 'com.jakewharton:butterknife:8.4.0'
+    compile "com.squareup.sqlbrite:sqlbrite:0.7.0"
 }

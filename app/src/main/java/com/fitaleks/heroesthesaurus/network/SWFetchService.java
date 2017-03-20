@@ -9,13 +9,10 @@ import retrofit.http.Query;
 import rx.Observable;
 
 /**
- * Created by alexander on 21.08.15.
+ * Created by Alexander on 01.12.16.
  */
-public interface MarvelFetchService {
+public interface SWFetchService {
 
-    @GET("/characters")
+    @GET("/people")
     Observable<List<Character>> getCharacters(@Query("orderBy") String orderBy, @Query("ts") long currentTime, @Query("hash") String hash, @Query("offset") long offset);
-
-    @GET("/characters")
-    Observable<List<Character>> getCharacters(@Query("orderBy") String orderBy, @Query("ts") long currentTime, @Query("hash") String hash, @Query("offset") long offset, @Query("nameStartsWith") String charName);
 }
