@@ -21,8 +21,6 @@ import butterknife.Unbinder;
 
 import static com.fitaleks.heroesthesaurus.util.Utils.checkNotNull;
 
-//import static com.google.common.base.Preconditions.checkNotNull;
-
 public class MainActivityFragment extends Fragment implements CharactersContract.View {
     private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
 
@@ -38,16 +36,6 @@ public class MainActivityFragment extends Fragment implements CharactersContract
 
     public static MainActivityFragment newInstance() {
         return new MainActivityFragment();
-    }
-
-    public MainActivityFragment() {
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-//        mListObservable = getObservable();
     }
 
     @Override
@@ -67,6 +55,7 @@ public class MainActivityFragment extends Fragment implements CharactersContract
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         unbinder = ButterKnife.bind(this, rootView);
+//        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mAdapter = new CharatersListAdapter(new ArrayList<>());
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLinearLayoutManager);
@@ -108,11 +97,6 @@ public class MainActivityFragment extends Fragment implements CharactersContract
             }
         }
     };
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
 
     @Override
     public void onDestroyView() {
