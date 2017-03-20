@@ -3,14 +3,12 @@ package com.fitaleks.heroesthesaurus.data;
 import android.content.ContentProviderOperation;
 import android.support.annotation.NonNull;
 
-import com.fitaleks.heroesthesaurus.database.CharacterColumns;
-import com.fitaleks.heroesthesaurus.database.CharactersProvider;
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by alexanderkulikovskiy on 24.08.15.
  */
-public class Character implements Comparable<Character> {
+public final class Character implements Comparable<Character> {
     @SerializedName("id")
     public long marvelId;
     public String name;
@@ -21,11 +19,15 @@ public class Character implements Comparable<Character> {
     @SerializedName("thumbnail")
     public Thumbnail thumbnail;
 
-//    public static long getCharactersCount() {
-//        return new Select().from(Character.class).count();
-//    }
+    public Character(long marvelId, String name, String description, String imageUrl) {
+        this.imageUrl = imageUrl;
+        this.name = name;
+        this.marvelId = marvelId;
+        this.description = description;
+    }
 
-    public ContentProviderOperation saveModel() {
+    /*public ContentProviderOperation saveModel() {
+
         if (this.thumbnail != null) {
             this.imageUrl = thumbnail.path + "." + thumbnail.extension;
         }
@@ -35,8 +37,10 @@ public class Character implements Comparable<Character> {
         builder.withValue(CharacterColumns.DESCRIPTION, description);
         builder.withValue(CharacterColumns.LAST_MODIFIED, lastModifiedDate);
         builder.withValue(CharacterColumns.IMAGE_URL, imageUrl);
+
         return builder.build();
-    }
+
+    }*/
 
     @Override
     public int compareTo(@NonNull Character another) {

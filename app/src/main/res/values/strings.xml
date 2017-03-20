@@ -7,4 +7,10 @@
     <string name="content_authority" translatable="false">com.fitaleks.heroesthesaurus</string>
 
     <string name="pref_loaded_num_of_characters">loaded_num_of_characters</string>
+
+    <string name="search">Search</string>
+
+    <!-- transition shared elements -->
+    <string name="transition_search_back" translatable="false">transition_search_back</string>
+
 </resources>

@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".characters.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,21 +20,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".characters.SearchActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.Translucent.Search"/>
 
-        <!-- ActiveAndroid META -->
-        <meta-data android:name="AA_DB_NAME" android:value="heroesthesaurus.db"/>
-        <meta-data android:name="AA_DB_VERSION" android:value="1"/>
-        <meta-data android:name="AA_MODELS" android:value="com.fitaleks.heroesthesaurus.data.Character"/>
-        <!-- ActiveAndroid META -->
-
-        <!--<provider-->
-            <!--android:authorities="@string/content_authority"-->
-            <!--android:name="com.activeandroid.content.ContentProvider"-->
-            <!--android:exported="false"/>-->
-        <provider
+        <!--<provider
             android:authorities="com.fitaleks.heroesthesaurus.database.CharactersProvider"
             android:name="com.fitaleks.heroesthesaurus.provider.CharactersProvider"
-            android:exported="false"/>
+            android:exported="false"/>-->
     </application>
 
 </manifest>

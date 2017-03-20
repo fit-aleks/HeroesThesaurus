@@ -1,4 +1,4 @@
-package com.fitaleks.heroesthesaurus;
+package com.fitaleks.heroesthesaurus.characters;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -7,12 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.fitaleks.heroesthesaurus.R;
 import com.fitaleks.heroesthesaurus.data.Character;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -53,15 +54,12 @@ public class CharatersListAdapter extends RecyclerView.Adapter<CharatersListAdap
         notifyDataSetChanged();
     }
 
-    public static class PhotoViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.img)
-        public ImageView mImageView;
-        @Bind(R.id.description)
-        public TextView mDescription;
-        @Bind(R.id.name)
-        public TextView mName;
+    static class PhotoViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.img) ImageView mImageView;
+        @BindView(R.id.description) TextView mDescription;
+        @BindView(R.id.name) TextView mName;
 
-        public PhotoViewHolder(View v) {
+        PhotoViewHolder(View v) {
             super(v);
             ButterKnife.bind(this, v);
         }

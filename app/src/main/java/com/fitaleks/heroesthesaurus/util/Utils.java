@@ -1,4 +1,4 @@
-package com.fitaleks.heroesthesaurus;
+package com.fitaleks.heroesthesaurus.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
