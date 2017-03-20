@@ -19,7 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.fitaleks.heroesthesaurus.util.Utils.checkNotNull;
+
+//import static com.google.common.base.Preconditions.checkNotNull;
 
 public class MainActivityFragment extends Fragment implements CharactersContract.View {
     private static final String LOG_TAG = MainActivityFragment.class.getSimpleName();
@@ -111,10 +113,6 @@ public class MainActivityFragment extends Fragment implements CharactersContract
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
     }
-
-//    private void updateAdapter(List<Character> listOfCharacters) {
-//        this.mAdapter.addCharacters(listOfCharacters);
-//    }
 
     @Override
     public void onDestroyView() {

@@ -20,7 +20,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import static com.fitaleks.heroesthesaurus.data.source.local.ThesaurusPersistenceContract.CharacterEntry;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.fitaleks.heroesthesaurus.util.Utils.checkNotNull;
 
 /**
  * Created by Alexander on 01.12.16.
