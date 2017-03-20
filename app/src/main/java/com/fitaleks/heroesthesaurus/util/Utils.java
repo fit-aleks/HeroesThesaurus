@@ -14,4 +14,12 @@ public class Utils {
         final NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     }
+
+    public static <T> T checkNotNull(T reference) {
+        if(reference == null) {
+            throw new NullPointerException();
+        } else {
+            return reference;
+        }
+    }
 }
