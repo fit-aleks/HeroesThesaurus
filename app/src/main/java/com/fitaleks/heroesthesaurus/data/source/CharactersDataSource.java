@@ -15,6 +15,7 @@ import rx.Observable;
 public interface CharactersDataSource {
     Observable<List<Character>> getCharacters();
     Observable<Character> getCharacter(@NonNull String characterId);
+    Observable<List<Character>> searchForCharacters(@NonNull final String query);
 
     void deleteAllCharacters();
     void saveCharacter(Character character);

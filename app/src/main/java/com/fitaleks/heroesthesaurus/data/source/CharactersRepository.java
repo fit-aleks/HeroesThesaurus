@@ -87,6 +87,10 @@ public class CharactersRepository implements CharactersDataSource {
         }
     }
 
+    public Observable<List<Character>> searchForCharacters(@NonNull final String query) {
+        return mTasksRemoteDataSource.searchForCharacters(query);
+    }
+
     private Observable<List<Character>> getAndCacheLocalCharacters() {
         return mTasksLocalDataSource.getCharacters()
                 .flatMap(characters -> Observable.from(characters).doOnNext(character -> mCachedTasks.put(character.marvelId, character)).toList());

@@ -7,9 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.fitaleks.heroesthesaurus.R;
 import com.fitaleks.heroesthesaurus.data.Character;
-import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class CharatersListAdapter extends RecyclerView.Adapter<CharatersListAdap
         Character character = mDataset.get(position);
         holder.mName.setText(character.name);
         holder.mDescription.setText(character.description);
-        Picasso.with(holder.mImageView.getContext())
+        Glide.with(holder.mImageView.getContext())
                 .load(character.imageUrl)
                 .into(holder.mImageView);
     }
@@ -51,6 +51,11 @@ public class CharatersListAdapter extends RecyclerView.Adapter<CharatersListAdap
 
     public void addCharacters(List<Character> newCharacters) {
         this.mDataset.addAll(newCharacters);
+        notifyDataSetChanged();
+    }
+
+    public void clear() {
+        this.mDataset.clear();
         notifyDataSetChanged();
     }
 

@@ -54,6 +54,12 @@ public class CharatersLocalDataSource implements CharactersDataSource {
         return new Character(itemId, title, description, imageUrl);
     }
 
+    @Override
+    public Observable<List<Character>> searchForCharacters(@NonNull String query) {
+        //TODO
+        return null;
+    }
+
     public static CharatersLocalDataSource getInstance(
             @NonNull Context context,
             @NonNull BaseSchedulerProvider schedulerProvider) {
