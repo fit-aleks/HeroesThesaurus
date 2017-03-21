@@ -38,6 +38,17 @@ public class CharactersRemoteDataSource implements CharactersDataSource {
     }
 
     @Override
+    public Observable<List<Character>> searchForCharacters(@NonNull final String query) {
+        final long curTime = System.currentTimeMillis();
+        return NetworkHelper.getRestAdapter()
+                .getCharacters("name", curTime, NetworkHelper.getHash(curTime), 0, query)
+                .timeout(15, TimeUnit.SECONDS)
+                .retry(3)
+                .onErrorResumeNext(Observable.empty())
+                .subscribeOn(Schedulers.io());
+    }
+
+    @Override
     public Observable<Character> getCharacter(@NonNull String characterId) {
         return null;
     }

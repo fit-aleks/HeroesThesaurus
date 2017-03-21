@@ -55,7 +55,6 @@ public class MainActivityFragment extends Fragment implements CharactersContract
                              Bundle savedInstanceState) {
         final View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         unbinder = ButterKnife.bind(this, rootView);
-//        recyclerView = (RecyclerView) rootView.findViewById(R.id.recycler_view);
         mAdapter = new CharatersListAdapter(new ArrayList<>());
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLinearLayoutManager);
