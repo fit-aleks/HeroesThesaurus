@@ -43,7 +43,7 @@ class CharactersPresenter(private val charactersRepository: CharactersRepository
         }
         mSubscriptions.clear()
 
-        val subscription = charactersRepository.characters
+        val subscription = charactersRepository.getCharacters()
                 .subscribeOn(mSchedulerProvider.computation())
                 .observeOn(mSchedulerProvider.ui())
                 .subscribe(
