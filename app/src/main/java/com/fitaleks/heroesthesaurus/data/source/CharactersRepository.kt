@@ -89,13 +89,13 @@ class CharactersRepository private constructor(var mTasksRemoteDataSource: Chara
     }
 
     override fun deleteAllCharacters() {
-        mTasksRemoteDataSource?.deleteAllCharacters()
-        mTasksLocalDataSource?.deleteAllCharacters()
+        mTasksRemoteDataSource.deleteAllCharacters()
+        mTasksLocalDataSource.deleteAllCharacters()
     }
 
     override fun saveCharacter(character: MarvelCharacter) {
-        mTasksRemoteDataSource?.saveCharacter(character)
-        mTasksLocalDataSource?.saveCharacter(character)
+        mTasksRemoteDataSource.saveCharacter(character)
+        mTasksLocalDataSource.saveCharacter(character)
     }
 
     override fun refreshCharacters() {
