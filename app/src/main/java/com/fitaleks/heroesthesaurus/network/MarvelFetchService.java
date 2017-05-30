@@ -1,6 +1,6 @@
 package com.fitaleks.heroesthesaurus.network;
 
-import com.fitaleks.heroesthesaurus.data.Character;
+import com.fitaleks.heroesthesaurus.data.MarvelCharacter;
 
 import java.util.List;
 
@@ -14,8 +14,15 @@ import rx.Observable;
 public interface MarvelFetchService {
 
     @GET("/characters")
-    Observable<List<Character>> getCharacters(@Query("orderBy") String orderBy, @Query("ts") long currentTime, @Query("hash") String hash, @Query("offset") long offset);
+    Observable<List<MarvelCharacter>> getCharacters(@Query("orderBy") String orderBy,
+                                                    @Query("ts") long currentTime,
+                                                    @Query("hash") String hash,
+                                                    @Query("offset") long offset);
 
     @GET("/characters")
-    Observable<List<Character>> getCharacters(@Query("orderBy") String orderBy, @Query("ts") long currentTime, @Query("hash") String hash, @Query("offset") long offset, @Query("nameStartsWith") String charName);
+    Observable<List<MarvelCharacter>> getCharacters(@Query("orderBy") String orderBy,
+                                                    @Query("ts") long currentTime,
+                                                    @Query("hash") String hash,
+                                                    @Query("offset") long offset,
+                                                    @Query("nameStartsWith") String charName);
 }
