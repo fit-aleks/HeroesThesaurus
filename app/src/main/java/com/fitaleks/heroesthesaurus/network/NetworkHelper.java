@@ -1,8 +1,5 @@
 package com.fitaleks.heroesthesaurus.network;
 
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.fitaleks.heroesthesaurus.BuildConfig;
@@ -16,8 +13,6 @@ import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.security.MessageDigest;
@@ -41,7 +36,12 @@ public class NetworkHelper {
                 .create();
 
         final RequestInterceptor requestInterceptor =
-                request -> request.addQueryParam("apikey", BuildConfig.MARVEL_PUB_API_KEY);
+                new RequestInterceptor() {
+                    @Override
+                    public void intercept(RequestFacade request) {
+                        request.addQueryParam("apikey", BuildConfig.MARVEL_PUB_API_KEY);
+                    }
+                };
 
         final RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(MARVEL_ENDPOINT)
