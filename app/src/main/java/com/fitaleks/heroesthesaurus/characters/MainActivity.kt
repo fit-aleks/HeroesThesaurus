@@ -50,10 +50,7 @@ class MainActivity : AppCompatActivity() {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
-
-
-        if (id == R.id.menu_search) {
+        if (item.itemId == R.id.menu_search) {
             val searchMenuView = toolbar.findViewById(R.id.menu_search)
             val options = ActivityOptions.makeSceneTransitionAnimation(this, searchMenuView,
                     getString(R.string.transition_search_back)).toBundle()
