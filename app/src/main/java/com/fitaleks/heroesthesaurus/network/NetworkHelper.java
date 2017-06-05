@@ -18,9 +18,12 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import retrofit.RequestInterceptor;
-import retrofit.RestAdapter;
-import retrofit.converter.GsonConverter;
+import okhttp3.Interceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by alexander on 21.08.15.
@@ -30,24 +33,33 @@ public class NetworkHelper {
     private static final String MARVEL_ENDPOINT = "http://gateway.marvel.com/v1/public";
 
     public static MarvelFetchService getRestAdapter() {
+
         final Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                 .registerTypeAdapterFactory(new MarvelTypeAdapterFactory())
                 .create();
 
-        final RequestInterceptor requestInterceptor =
-                new RequestInterceptor() {
+
+
+        final Interceptor requestInterceptor =
+                new Interceptor() {
                     @Override
-                    public void intercept(RequestFacade request) {
-                        request.addQueryParam("apikey", BuildConfig.MARVEL_PUB_API_KEY);
+                    public Response intercept(Chain chain) throws IOException {
+                        final Request request = chain.request().newBuilder()
+                                .header("apikey", BuildConfig.MARVEL_PUB_API_KEY)
+                                .build();
+                        return chain.proceed(request);
                     }
                 };
 
-        final RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(MARVEL_ENDPOINT)
-                .setConverter(new GsonConverter(gson))
-                .setRequestInterceptor(requestInterceptor)
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+        final OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.interceptors().add(requestInterceptor);
+
+        final Retrofit restAdapter = new Retrofit.Builder()
+                .baseUrl(MARVEL_ENDPOINT)
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson))
+//                .setLogLevel(Retrofit.LogLevel.FULL)
                 .build();
 
         return restAdapter.create(MarvelFetchService.class);

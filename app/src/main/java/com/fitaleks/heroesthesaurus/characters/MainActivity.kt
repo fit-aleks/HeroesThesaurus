@@ -1,30 +1,26 @@
 package com.fitaleks.heroesthesaurus.characters
 
 import android.app.ActivityOptions
+import android.arch.lifecycle.LifecycleActivity
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toolbar
 import com.fitaleks.heroesthesaurus.R
-import com.fitaleks.heroesthesaurus.data.source.CharactersRepository
-import com.fitaleks.heroesthesaurus.data.source.local.CharatersLocalDataSource
-import com.fitaleks.heroesthesaurus.data.source.remote.CharactersRemoteDataSource
 import com.fitaleks.heroesthesaurus.util.addFragmentToActivity
-import com.fitaleks.heroesthesaurus.util.schedulers.SchedulerProvider
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : LifecycleActivity() {
 
-    private var charactersPresenter: CharactersPresenter? = null
-    private val toolbar: Toolbar by lazy {findViewById(R.id.toolbar) as Toolbar}
-
+    private val RC_SEARCH = 42
+//    private var charactersPresenter: CharactersPresenter? = null
+    private val toolbar: Toolbar by lazy { findViewById(R.id.toolbar) as Toolbar }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setActionBar(toolbar)
 
-        setSupportActionBar(toolbar)
 
         var fragment: MainActivityFragment? = supportFragmentManager.findFragmentById(R.id.contentFrame) as MainActivityFragment?
         if (fragment == null) {
@@ -32,10 +28,10 @@ class MainActivity : AppCompatActivity() {
             addFragmentToActivity(fragment, R.id.contentFrame)
         }
 
-        charactersPresenter = CharactersPresenter(CharactersRepository.instance(CharactersRemoteDataSource.instance,
-                CharatersLocalDataSource(this, SchedulerProvider.getInstance())),
-                fragment,
-                SchedulerProvider.getInstance())
+//        charactersPresenter = CharactersPresenter(CharactersRepository.instance(CharactersRemoteDataSource.instance,
+//                CharatersLocalDataSource(this, SchedulerProvider.instance)),
+//                fragment,
+//                SchedulerProvider.instance)
 
     }
 
@@ -59,9 +55,5 @@ class MainActivity : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    companion object {
-        private val RC_SEARCH = 42
     }
 }

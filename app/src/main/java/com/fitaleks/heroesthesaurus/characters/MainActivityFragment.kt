@@ -1,18 +1,19 @@
 package com.fitaleks.heroesthesaurus.characters
 
+import android.arch.lifecycle.LifecycleFragment
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.fitaleks.heroesthesaurus.R
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
+import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
 import java.util.*
 
-class MainActivityFragment : Fragment(), CharactersContract.View {
+class MainActivityFragment : LifecycleFragment() {
 
     private val recyclerView: RecyclerView by lazy {
         view?.findViewById(R.id.recycler_view) as RecyclerView
@@ -23,7 +24,7 @@ class MainActivityFragment : Fragment(), CharactersContract.View {
     private var loading = true
     private var previousTotal = 0
 
-    private var presenter: CharactersContract.Presenter? = null
+//    private var presenter: CharactersContract.Presenter? = null
     private var firstVisibleItem: Int = 0
     private var visibleItemCount: Int = 0
     private var totalItemCount: Int = 0
@@ -62,12 +63,12 @@ class MainActivityFragment : Fragment(), CharactersContract.View {
 
     override fun onResume() {
         super.onResume()
-        presenter!!.subscribe()
+//        presenter!!.subscribe()
     }
 
     override fun onPause() {
         super.onPause()
-        presenter!!.unsubscribe()
+//        presenter!!.unsubscribe()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -81,10 +82,14 @@ class MainActivityFragment : Fragment(), CharactersContract.View {
         recyclerView.layoutManager = mLinearLayoutManager
         recyclerView.addOnScrollListener(listen)
         recyclerView.adapter = mAdapter
+
+        val charactersViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
+        charactersViewModel.getCharactersData()?.observe(this, android.arch.lifecycle.Observer { t -> mAdapter.addCharacters(t) })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
     }
 
     //    private void updateAdapter(List<MarvelCharacter> listOfCharacters) {
@@ -96,21 +101,21 @@ class MainActivityFragment : Fragment(), CharactersContract.View {
         super.onDestroyView()
     }
 
-    override fun setLoadingIndicator(active: Boolean) {
-
-    }
-
-    override fun showCharacters(characters: List<MarvelCharacter>) {
-        mAdapter.addCharacters(characters)
-    }
-
-    override fun showLoadingError() {
-        Toast.makeText(context, "loading error", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun setPresenter(presenter: CharactersContract.Presenter) {
-        this.presenter = checkNotNull(presenter)
-    }
+//    override fun setLoadingIndicator(active: Boolean) {
+//
+//    }
+//
+//    override fun showCharacters(characters: List<MarvelCharacter>) {
+//        mAdapter.addCharacters(characters)
+//    }
+//
+//    override fun showLoadingError() {
+//        Toast.makeText(context, "loading error", Toast.LENGTH_SHORT).show()
+//    }
+//
+//    override fun setPresenter(presenter: CharactersContract.Presenter) {
+//        this.presenter = checkNotNull(presenter)
+//    }
 
     companion object {
         private val LOG_TAG = MainActivityFragment::class.java.simpleName

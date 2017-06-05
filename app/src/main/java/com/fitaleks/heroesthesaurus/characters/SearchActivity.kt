@@ -90,10 +90,10 @@ class SearchActivity : AppCompatActivity() {
     private fun searchFor(query: String) {
         clearResults()
         CharactersRepository.instance(CharactersRemoteDataSource.instance,
-                CharatersLocalDataSource(this, SchedulerProvider.getInstance()))
+                CharatersLocalDataSource(this, SchedulerProvider.instance))
                 .searchForCharacters(query)
-                .subscribeOn(SchedulerProvider.getInstance().computation())
-                .observeOn(SchedulerProvider.getInstance().ui())
+                .subscribeOn(SchedulerProvider.instance.computation())
+                .observeOn(SchedulerProvider.instance.ui())
                 .subscribe({ processTasks(it) },
                         { Toast.makeText(this@SearchActivity, it.localizedMessage, Toast.LENGTH_SHORT).show() })
     }
