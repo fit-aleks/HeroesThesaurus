@@ -1,66 +1,33 @@
 package com.fitaleks.heroesthesaurus.data.source
 
-import android.support.annotation.VisibleForTesting
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MutableLiveData
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
-import rx.Observable
+import com.fitaleks.heroesthesaurus.data.source.remote.CharactersRemoteDataSource
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.*
 
 /**
  * Created by Alexander on 01.12.16.
  */
-class CharactersRepository private constructor(var mTasksRemoteDataSource: CharactersDataSource,
-                                               var mTasksLocalDataSource: CharactersDataSource) : CharactersDataSource {
+object CharactersRepository {
 
-    companion object {
-        fun instance(tasksRemoteDataSource: CharactersDataSource,
-                     tasksLocalDataSource: CharactersDataSource) : CharactersRepository {
-            return CharactersRepository(tasksRemoteDataSource, tasksLocalDataSource)
-        }
-    }
+    fun getCharacters(): LiveData<List<MarvelCharacter>> {
+        val mutableLiveData: MutableLiveData<List<MarvelCharacter>> = MutableLiveData()
+        CharactersRemoteDataSource.instance.getCharacters().enqueue(object : Callback<List<MarvelCharacter>> {
+            override fun onFailure(call: Call<List<MarvelCharacter>>?, t: Throwable?) {
+            }
 
-//    private var mTasksRemoteDataSource: CharactersDataSource? = null
-//    private var mTasksLocalDataSource: CharactersDataSource? = null
+            override fun onResponse(call: Call<List<MarvelCharacter>>?, response: Response<List<MarvelCharacter>>) {
+                    mutableLiveData.value = response.body()
+                }
+            }
 
-    /**
-     * Returns the single instance of this class, creating it if necessary.
+        )
+        return mutableLiveData
 
-     * @param charactersRemoteDataSource the backend data source
-     * *
-     * @param charactersLocalDataSource the device storage data source
-     * *
-     * @return the [CharactersRepository] instance
-     */
-//    fun init(charactersRemoteDataSource: CharactersDataSource, charactersLocalDataSource: CharactersDataSource) {
-//        mTasksRemoteDataSource = charactersRemoteDataSource
-//        mTasksLocalDataSource = charactersLocalDataSource
-//    }
-
-    /**
-     * This variable has package local visibility so it can be accessed from tests.
-     */
-    @VisibleForTesting
-    internal var mCachedTasks: MutableMap<Long, MarvelCharacter>? = null
-    /**
-     * Marks the cache as invalid, to force an update the next time data is requested. This variable
-     * has package local visibility so it can be accessed from tests.
-     */
-    @VisibleForTesting
-    internal var mCacheIsDirty = false
-
-    override fun getCharacters(): Observable<List<MarvelCharacter>> {
-        if (mCachedTasks != null && !mCacheIsDirty) {
-            return Observable.from(mCachedTasks!!.values).toList()
-        } else if (mCachedTasks == null) {
-            mCachedTasks = LinkedHashMap<Long, MarvelCharacter>()
-        }
-        val remoteCharacters = andSaveRemoteCharacters
-        if (mCacheIsDirty) {
-            return remoteCharacters
-        } else {
-            val localCharacters = andCacheLocalCharacters
-            return Observable.concat(localCharacters, remoteCharacters)
-                    .first()
-        }
     }
 
     override fun searchForCharacters(query: String): Observable<List<MarvelCharacter>> {

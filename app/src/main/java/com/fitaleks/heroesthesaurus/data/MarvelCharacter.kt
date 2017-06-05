@@ -1,10 +1,12 @@
 package com.fitaleks.heroesthesaurus.data
 
+import android.arch.persistence.room.Entity
 import com.google.gson.annotations.SerializedName
 
 /**
  * Created by alexanderkulikovskiy on 24.08.15.
  */
+@Entity
 class MarvelCharacter(@SerializedName("id") val marvelId: Long,
                       val name: String,
                       val description: String,
