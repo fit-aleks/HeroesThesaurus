@@ -84,7 +84,7 @@ class MainActivityFragment : LifecycleFragment() {
         recyclerView.adapter = mAdapter
 
         val charactersViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
-        charactersViewModel.getCharactersData()?.observe(this, android.arch.lifecycle.Observer { t -> mAdapter.addCharacters(t) })
+        charactersViewModel.getCharactersData().observe(this, android.arch.lifecycle.Observer { t -> t?.let { mAdapter.addCharacters(it) } })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

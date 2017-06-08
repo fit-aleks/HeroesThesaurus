@@ -13,22 +13,16 @@ import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
 import android.widget.SearchView
-import android.widget.Toast
 import com.fitaleks.heroesthesaurus.R
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
-import com.fitaleks.heroesthesaurus.data.source.CharactersRepository
-import com.fitaleks.heroesthesaurus.data.source.local.CharatersLocalDataSource
-import com.fitaleks.heroesthesaurus.data.source.remote.CharactersRemoteDataSource
 import com.fitaleks.heroesthesaurus.util.ImeUtils
 import com.fitaleks.heroesthesaurus.util.TransitionUtils
-import com.fitaleks.heroesthesaurus.util.schedulers.SchedulerProvider
 import com.fitaleks.heroesthesaurus.util.transitions.CircularReveal
 import java.util.*
 
 /**
  * Created by Alexander on 02.12.16.
  */
-
 class SearchActivity : AppCompatActivity() {
 
     private val searchBack: ImageButton by lazy { findViewById(R.id.searchback) as ImageButton }
@@ -89,6 +83,7 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchFor(query: String) {
         clearResults()
+        /*
         CharactersRepository.instance(CharactersRemoteDataSource.instance,
                 CharatersLocalDataSource(this, SchedulerProvider.instance))
                 .searchForCharacters(query)
@@ -96,6 +91,7 @@ class SearchActivity : AppCompatActivity() {
                 .observeOn(SchedulerProvider.instance.ui())
                 .subscribe({ processTasks(it) },
                         { Toast.makeText(this@SearchActivity, it.localizedMessage, Toast.LENGTH_SHORT).show() })
+                        */
     }
 
     private fun processTasks(characters: List<MarvelCharacter>) {

@@ -26,7 +26,7 @@ class CharactersListAdapter(private val mDataset: MutableList<MarvelCharacter>) 
         holder.mName.text = character.name
         holder.mDescription.text = character.description
         Glide.with(holder.mImageView.context)
-                .load(character.imageUrl)
+                .load("${character.thumbnail?.path}.${character.thumbnail?.extension}")
                 .into(holder.mImageView)
     }
 

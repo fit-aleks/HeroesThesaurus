@@ -2,20 +2,16 @@ package com.fitaleks.heroesthesaurus.characters
 
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
 import com.fitaleks.heroesthesaurus.data.source.CharactersRepository
-import com.fitaleks.heroesthesaurus.util.schedulers.BaseSchedulerProvider
-
-import rx.subscriptions.CompositeSubscription
 
 /**
  * Created by Alexander on 01.12.16.
  */
 class CharactersPresenter(private val charactersRepository: CharactersRepository,
-                          private val charactersView: CharactersContract.View,
-                          private val mSchedulerProvider: BaseSchedulerProvider) : CharactersContract.Presenter {
+                          private val charactersView: CharactersContract.View) : CharactersContract.Presenter {
 
     private var mFirstLoad = true
 
-    private val mSubscriptions = CompositeSubscription()
+//    private val mSubscriptions = CompositeSubscription()
 
     init {
         charactersView.setPresenter(this)
@@ -26,36 +22,36 @@ class CharactersPresenter(private val charactersRepository: CharactersRepository
     }
 
     override fun unsubscribe() {
-        mSubscriptions.unsubscribe()
+//        mSubscriptions.unsubscribe()
     }
 
     override fun loadCharacters(forceUpdate: Boolean) {
-        loadCharacters(forceUpdate || mFirstLoad, true)
+//        loadCharacters(forceUpdate || mFirstLoad, true)
         mFirstLoad = false
     }
 
-    private fun loadCharacters(forceUpdate: Boolean, showLoadingUi: Boolean) {
-        if (showLoadingUi) {
-            charactersView.setLoadingIndicator(true)
-        }
-        if (forceUpdate) {
-            charactersRepository.refreshCharacters()
-        }
-        mSubscriptions.clear()
-
-        val subscription = charactersRepository.getCharacters()
-                .subscribeOn(mSchedulerProvider.computation())
-                .observeOn(mSchedulerProvider.ui())
-                .subscribe(
-                        //onNext
-                        { this.processTasks(it) },
-                        //onError
-                        { _ -> charactersView.showLoadingError() },
-                        //onCompleted
-                        { charactersView.setLoadingIndicator(false) }
-                )
-        mSubscriptions.add(subscription)
-    }
+//    private fun loadCharacters(forceUpdate: Boolean, showLoadingUi: Boolean) {
+//        if (showLoadingUi) {
+//            charactersView.setLoadingIndicator(true)
+//        }
+//        if (forceUpdate) {
+//            charactersRepository.refreshCharacters()
+//        }
+//        mSubscriptions.clear()
+//
+//        val subscription = charactersRepository.getCharacters()
+//                .subscribeOn(mSchedulerProvider.computation())
+//                .observeOn(mSchedulerProvider.ui())
+//                .subscribe(
+//                        //onNext
+//                        { this.processTasks(it) },
+//                        //onError
+//                        { _ -> charactersView.showLoadingError() },
+//                        //onCompleted
+//                        { charactersView.setLoadingIndicator(false) }
+//                )
+//        mSubscriptions.add(subscription)
+//    }
 
     private fun processTasks(tasks: List<MarvelCharacter>) {
         if (tasks.isEmpty()) {

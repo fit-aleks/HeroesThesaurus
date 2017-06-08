@@ -18,10 +18,12 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -30,7 +32,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class NetworkHelper {
     private static final String LOG_TAG = NetworkHelper.class.getSimpleName();
-    private static final String MARVEL_ENDPOINT = "http://gateway.marvel.com/v1/public";
+    private static final String MARVEL_ENDPOINT = "http://gateway.marvel.com/v1/public/";
+    private static final String TAG = NetworkHelper.class.getSimpleName();
 
     public static MarvelFetchService getRestAdapter() {
 
@@ -39,27 +42,30 @@ public class NetworkHelper {
                 .registerTypeAdapterFactory(new MarvelTypeAdapterFactory())
                 .create();
 
-
-
         final Interceptor requestInterceptor =
                 new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
-                        final Request request = chain.request().newBuilder()
-                                .header("apikey", BuildConfig.MARVEL_PUB_API_KEY)
+                        Request request = chain.request();
+                        final HttpUrl httpUrl = request.url().newBuilder()
+                                .addQueryParameter("apikey", BuildConfig.MARVEL_PUB_API_KEY)
                                 .build();
+                        request = request.newBuilder().url(httpUrl).build();
                         return chain.proceed(request);
                     }
                 };
 
-        final OkHttpClient okHttpClient = new OkHttpClient();
-        okHttpClient.interceptors().add(requestInterceptor);
+        final HttpLoggingInterceptor loggingInterceptor1 = new HttpLoggingInterceptor();
+        loggingInterceptor1.setLevel(HttpLoggingInterceptor.Level.BODY);
+        final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(requestInterceptor)
+                .addInterceptor(loggingInterceptor1)
+                .build();
 
         final Retrofit restAdapter = new Retrofit.Builder()
                 .baseUrl(MARVEL_ENDPOINT)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
-//                .setLogLevel(Retrofit.LogLevel.FULL)
                 .build();
 
         return restAdapter.create(MarvelFetchService.class);

@@ -1,35 +1,23 @@
 package com.fitaleks.heroesthesaurus.data.source.local
 
-import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.text.TextUtils
-import com.fitaleks.heroesthesaurus.data.MarvelCharacter
-import com.fitaleks.heroesthesaurus.data.source.CharactersDataSource
-import com.fitaleks.heroesthesaurus.data.source.local.ThesaurusPersistenceContract.CharacterEntry
-import com.fitaleks.heroesthesaurus.util.schedulers.BaseSchedulerProvider
-import com.squareup.sqlbrite.BriteDatabase
-import com.squareup.sqlbrite.SqlBrite
-import rx.Observable
-import rx.functions.Func1
 
 /**
  * Created by Alexander on 01.12.16.
  */
-class CharatersLocalDataSource(context: Context, schedulerProvider: BaseSchedulerProvider) : CharactersDataSource {
+class CharatersLocalDataSource(context: Context)  {
 
-    private val mDatabaseHelper: BriteDatabase
-
-    private val mTaskMapperFunction: Func1<Cursor, MarvelCharacter>
-
-    init {
-        val dbHelper = ThesaurusDbHelper(context)
-        val sqlBrite = SqlBrite.create()
-        mDatabaseHelper = sqlBrite.wrapDatabaseHelper(dbHelper, schedulerProvider.io())
-        mTaskMapperFunction = Func1<Cursor, MarvelCharacter> { this.getCharacter(it) }
-    }
-
+//    private val mDatabaseHelper: BriteDatabase
+//
+//    private val mTaskMapperFunction: Func1<Cursor, MarvelCharacter>
+//
+//    init {
+//        val dbHelper = ThesaurusDbHelper(context)
+//        val sqlBrite = SqlBrite.create()
+//        mDatabaseHelper = sqlBrite.wrapDatabaseHelper(dbHelper, schedulerProvider.io())
+//        mTaskMapperFunction = Func1<Cursor, MarvelCharacter> { this.getCharacter(it) }
+//    }
+/*
     private fun getCharacter(c: Cursor): MarvelCharacter {
         val itemId = c.getLong(c.getColumnIndexOrThrow(CharacterEntry.COLUMN_NAME_ENTRY_ID))
         val title = c.getString(c.getColumnIndexOrThrow(CharacterEntry.COLUMN_NAME_TITLE))
@@ -76,7 +64,7 @@ class CharatersLocalDataSource(context: Context, schedulerProvider: BaseSchedule
 
     override fun searchForCharacters(query: String): Observable<List<MarvelCharacter>> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    }*/
 
     //    companion object {
 //
