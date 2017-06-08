@@ -16,13 +16,13 @@ interface MarvelFetchService {
 //                      @Query("hash") hash: String,
 //                      @Query("offset") offset: Long): Observable<List<MarvelCharacter>>
 
-    @GET("/characters")
+    @GET("characters")
     fun getCharacters(@Query("orderBy") orderBy: String,
                       @Query("ts") currentTime: Long,
                       @Query("hash") hash: String,
                       @Query("offset") offset: Long): Call<List<MarvelCharacter>>
 
-    @GET("/characters")
+    @GET("characters")
     fun getCharacters(@Query("orderBy") orderBy: String,
                       @Query("ts") currentTime: Long,
                       @Query("hash") hash: String,

@@ -1,16 +1,16 @@
 package com.fitaleks.heroesthesaurus.characters
 
 import android.app.ActivityOptions
-import android.arch.lifecycle.LifecycleActivity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toolbar
 import com.fitaleks.heroesthesaurus.R
 import com.fitaleks.heroesthesaurus.util.addFragmentToActivity
 
-class MainActivity : LifecycleActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val RC_SEARCH = 42
 //    private var charactersPresenter: CharactersPresenter? = null
@@ -19,8 +19,7 @@ class MainActivity : LifecycleActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setActionBar(toolbar)
-
+        setSupportActionBar(toolbar)
 
         var fragment: MainActivityFragment? = supportFragmentManager.findFragmentById(R.id.contentFrame) as MainActivityFragment?
         if (fragment == null) {

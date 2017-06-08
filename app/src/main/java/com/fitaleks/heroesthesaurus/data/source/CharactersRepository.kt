@@ -7,7 +7,6 @@ import com.fitaleks.heroesthesaurus.data.source.remote.CharactersRemoteDataSourc
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.*
 
 /**
  * Created by Alexander on 01.12.16.
@@ -16,24 +15,39 @@ object CharactersRepository {
 
     fun getCharacters(): LiveData<List<MarvelCharacter>> {
         val mutableLiveData: MutableLiveData<List<MarvelCharacter>> = MutableLiveData()
-        CharactersRemoteDataSource.instance.getCharacters().enqueue(object : Callback<List<MarvelCharacter>> {
-            override fun onFailure(call: Call<List<MarvelCharacter>>?, t: Throwable?) {
-            }
+        CharactersRemoteDataSource.instance
+                .getCharacters()
+                .enqueue(object : Callback<List<MarvelCharacter>> {
+                    override fun onFailure(call: Call<List<MarvelCharacter>>?, t: Throwable?) {
+                    }
 
-            override fun onResponse(call: Call<List<MarvelCharacter>>?, response: Response<List<MarvelCharacter>>) {
-                    mutableLiveData.value = response.body()
+                    override fun onResponse(call: Call<List<MarvelCharacter>>?, response: Response<List<MarvelCharacter>>) {
+                        mutableLiveData.value = response.body()
+                    }
                 }
-            }
-
-        )
+                )
         return mutableLiveData
 
     }
 
-    override fun searchForCharacters(query: String): Observable<List<MarvelCharacter>> {
-        return mTasksRemoteDataSource.searchForCharacters(query)
+
+    fun searchForCharacters(query: String): LiveData<List<MarvelCharacter>> {
+        val mutableLiveData: MutableLiveData<List<MarvelCharacter>> = MutableLiveData()
+        CharactersRemoteDataSource.instance
+                .searchForCharacters(query)
+                .enqueue(object : Callback<List<MarvelCharacter>> {
+                    override fun onFailure(call: Call<List<MarvelCharacter>>?, t: Throwable?) {
+                    }
+
+                    override fun onResponse(call: Call<List<MarvelCharacter>>?, response: Response<List<MarvelCharacter>>) {
+                        mutableLiveData.value = response.body()
+                    }
+                }
+                )
+        return mutableLiveData
     }
 
+    /*
     private val andCacheLocalCharacters: Observable<List<MarvelCharacter>>
         get() = mTasksLocalDataSource.getCharacters().flatMap { characters ->
             Observable.from(characters)
@@ -68,5 +82,5 @@ object CharactersRepository {
     override fun refreshCharacters() {
         mCacheIsDirty = true
     }
-
+    */
 }
