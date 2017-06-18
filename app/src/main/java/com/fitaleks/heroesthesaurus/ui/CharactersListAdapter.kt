@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.fitaleks.heroesthesaurus.R
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
 
@@ -27,6 +28,7 @@ class CharactersListAdapter(private val mDataset: MutableList<MarvelCharacter>) 
         holder.mDescription.text = character.description
         Glide.with(holder.mImageView.context)
                 .load("${character.thumbnail?.path}.${character.thumbnail?.extension}")
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.mImageView)
     }
 
