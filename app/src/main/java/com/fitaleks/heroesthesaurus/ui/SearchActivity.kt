@@ -99,6 +99,7 @@ class SearchActivity : LifecycleActivity() {
         } else {
             // Show the list of characters
             adapter.addCharacters(characters)
+            ImeUtils.hideIme(searchView)
             // Set the filter label's text.
             // showFilterLabel();
         }
