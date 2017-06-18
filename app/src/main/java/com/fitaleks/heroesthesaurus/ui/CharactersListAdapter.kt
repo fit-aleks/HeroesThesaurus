@@ -1,4 +1,4 @@
-package com.fitaleks.heroesthesaurus.characters
+package com.fitaleks.heroesthesaurus.ui
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
