@@ -16,8 +16,12 @@ object CharactersRepository {
     // temporary hardcoded
     private val maxAvailableNumOfCharacters = 1465
 
-    fun getCharacters(): LiveData<List<MarvelCharacter>> {
+    var listOfCharacters: LiveData<List<MarvelCharacter>>? = null
+    fun getCharacters(): LiveData<List<MarvelCharacter>>? {
+        listOfCharacters?.let { return listOfCharacters }
+
         val mutableLiveData: MutableLiveData<List<MarvelCharacter>> = MutableLiveData()
+        listOfCharacters = mutableLiveData
         NetworkHelper.restAdapter
                 .getCharacters("name", Random().nextInt(maxAvailableNumOfCharacters).toLong())
                 .enqueue(object : Callback<List<MarvelCharacter>> {
