@@ -46,8 +46,11 @@ public class NetworkHelper {
                 new Interceptor() {
                     @Override
                     public Response intercept(Chain chain) throws IOException {
+                        final long curTime = System.currentTimeMillis();
                         Request request = chain.request();
                         final HttpUrl httpUrl = request.url().newBuilder()
+                                .addQueryParameter("ts", String.valueOf(curTime))
+                                .addQueryParameter("hash", NetworkHelper.getHash(curTime))
                                 .addQueryParameter("apikey", BuildConfig.MARVEL_PUB_API_KEY)
                                 .build();
                         request = request.newBuilder().url(httpUrl).build();

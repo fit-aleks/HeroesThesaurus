@@ -3,6 +3,7 @@ package com.fitaleks.heroesthesaurus.ui
 import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -17,6 +18,9 @@ class MainActivityFragment : LifecycleFragment() {
 
     private val recyclerView: RecyclerView by lazy {
         view?.findViewById(R.id.recycler_view) as RecyclerView
+    }
+    private val swipeRefresh: SwipeRefreshLayout by lazy {
+        view?.findViewById(R.id.swipe_refresh) as SwipeRefreshLayout
     }
 
     private var mAdapter: CharactersListAdapter = CharactersListAdapter(ArrayList<MarvelCharacter>())
@@ -82,6 +86,7 @@ class MainActivityFragment : LifecycleFragment() {
         recyclerView.layoutManager = mLinearLayoutManager
         recyclerView.addOnScrollListener(listen)
         recyclerView.adapter = mAdapter
+        swipeRefresh.isEnabled = false
 
         val charactersViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
         charactersViewModel.getCharactersData().observe(this, android.arch.lifecycle.Observer { t -> t?.let { mAdapter.addCharacters(it) } })
