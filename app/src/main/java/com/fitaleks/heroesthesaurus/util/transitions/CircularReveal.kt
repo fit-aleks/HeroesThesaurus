@@ -16,7 +16,6 @@ import com.fitaleks.heroesthesaurus.util.AnimUtils
 /**
  * Created by Alexander on 02.12.16.
  */
-
 class CircularReveal : Visibility {
 
     private var center: Point? = null

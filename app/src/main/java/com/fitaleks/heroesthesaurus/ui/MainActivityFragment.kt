@@ -28,7 +28,6 @@ class MainActivityFragment : LifecycleFragment() {
     private var loading = true
     private var previousTotal = 0
 
-//    private var presenter: CharactersContract.Presenter? = null
     private var firstVisibleItem: Int = 0
     private var visibleItemCount: Int = 0
     private var totalItemCount: Int = 0
@@ -65,16 +64,6 @@ class MainActivityFragment : LifecycleFragment() {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onResume() {
-        super.onResume()
-//        presenter!!.subscribe()
-    }
-
-    override fun onPause() {
-        super.onPause()
-//        presenter!!.unsubscribe()
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -97,34 +86,12 @@ class MainActivityFragment : LifecycleFragment() {
 
     }
 
-    //    private void updateAdapter(List<MarvelCharacter> listOfCharacters) {
-    //        this.mAdapter.addCharacters(listOfCharacters);
-    //    }
-
     override fun onDestroyView() {
         recyclerView.removeOnScrollListener(listen)
         super.onDestroyView()
     }
 
-//    override fun setLoadingIndicator(active: Boolean) {
-//
-//    }
-//
-//    override fun showCharacters(characters: List<MarvelCharacter>) {
-//        mAdapter.addCharacters(characters)
-//    }
-//
-//    override fun showLoadingError() {
-//        Toast.makeText(context, "loading error", Toast.LENGTH_SHORT).show()
-//    }
-//
-//    override fun setPresenter(presenter: CharactersContract.Presenter) {
-//        this.presenter = checkNotNull(presenter)
-//    }
-
     companion object {
-        private val LOG_TAG = MainActivityFragment::class.java.simpleName
-
         fun newInstance(): MainActivityFragment {
             return MainActivityFragment()
         }
