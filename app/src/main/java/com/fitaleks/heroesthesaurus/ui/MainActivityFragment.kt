@@ -78,7 +78,7 @@ class MainActivityFragment : LifecycleFragment() {
         swipeRefresh.isEnabled = false
 
         val charactersViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
-        charactersViewModel.getCharactersData().observe(this, android.arch.lifecycle.Observer { t -> t?.let { mAdapter.addCharacters(it) } })
+        charactersViewModel.getCharactersData()?.observe(this, android.arch.lifecycle.Observer { t -> t?.let { mAdapter.addCharacters(it) } })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
