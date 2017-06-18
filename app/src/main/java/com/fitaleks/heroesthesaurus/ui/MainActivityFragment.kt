@@ -1,4 +1,4 @@
-package com.fitaleks.heroesthesaurus.characters
+package com.fitaleks.heroesthesaurus.ui
 
 import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.ViewModelProviders

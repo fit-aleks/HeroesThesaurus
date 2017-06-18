@@ -1,4 +1,4 @@
-package com.fitaleks.heroesthesaurus.characters
+package com.fitaleks.heroesthesaurus.ui
 
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
 import com.fitaleks.heroesthesaurus.data.source.CharactersRepository

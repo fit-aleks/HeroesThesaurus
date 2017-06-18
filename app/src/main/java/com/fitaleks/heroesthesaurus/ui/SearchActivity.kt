@@ -1,4 +1,4 @@
-package com.fitaleks.heroesthesaurus.characters
+package com.fitaleks.heroesthesaurus.ui
 
 import android.app.SharedElementCallback
 import android.graphics.Point

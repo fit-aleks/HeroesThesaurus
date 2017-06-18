@@ -1,4 +1,4 @@
-package com.fitaleks.heroesthesaurus.characters
+package com.fitaleks.heroesthesaurus.ui
 
 import com.fitaleks.heroesthesaurus.BasePresenter
 import com.fitaleks.heroesthesaurus.BaseView
