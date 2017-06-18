@@ -1,9 +1,11 @@
 package com.fitaleks.heroesthesaurus.ui
 
 import android.app.SharedElementCallback
+import android.arch.lifecycle.LifecycleActivity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Point
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.InputType
@@ -18,17 +20,21 @@ import com.fitaleks.heroesthesaurus.data.MarvelCharacter
 import com.fitaleks.heroesthesaurus.util.ImeUtils
 import com.fitaleks.heroesthesaurus.util.TransitionUtils
 import com.fitaleks.heroesthesaurus.util.transitions.CircularReveal
+import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
 import java.util.*
 
 /**
  * Created by Alexander on 02.12.16.
  */
-class SearchActivity : AppCompatActivity() {
+class SearchActivity : LifecycleActivity() {
 
     private val searchBack: ImageButton by lazy { findViewById(R.id.searchback) as ImageButton }
     private val searchView: SearchView by lazy { findViewById(R.id.search_view) as SearchView }
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.search_results) as RecyclerView }
     private val adapter = CharactersListAdapter(ArrayList<MarvelCharacter>())
+    private val viewModel by lazy {
+        ViewModelProviders.of(this).get(CharactersViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,26 +89,18 @@ class SearchActivity : AppCompatActivity() {
 
     private fun searchFor(query: String) {
         clearResults()
-        /*
-        CharactersRepository.instance(CharactersRemoteDataSource.instance,
-                CharatersLocalDataSource(this, SchedulerProvider.instance))
-                .searchForCharacters(query)
-                .subscribeOn(SchedulerProvider.instance.computation())
-                .observeOn(SchedulerProvider.instance.ui())
-                .subscribe({ processTasks(it) },
-                        { Toast.makeText(this@SearchActivity, it.localizedMessage, Toast.LENGTH_SHORT).show() })
-                        */
+        viewModel.searchForCharacters(query).observe(this, Observer { it -> it?.let { processResult(it) } })
     }
 
-    private fun processTasks(characters: List<MarvelCharacter>) {
+    private fun processResult(characters: List<MarvelCharacter>) {
         if (characters.isEmpty()) {
             // Show a message indicating there are no characters for that filter type.
-            //            processEmptyTasks();
+            // processEmptyTasks();
         } else {
             // Show the list of characters
             adapter.addCharacters(characters)
             // Set the filter label's text.
-            //            showFilterLabel();
+            // showFilterLabel();
         }
     }
 
