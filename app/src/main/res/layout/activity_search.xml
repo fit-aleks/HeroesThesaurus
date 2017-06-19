@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="?android:actionBarSize"
         android:outlineProvider="bounds"
-        android:elevation="@dimen/z_app_bar"
+        android:elevation="@dimen/appbar_elevation"
         android:transitionGroup="false"
         android:theme="@style/SearchViewTheme">
 
@@ -24,7 +24,7 @@
             android:id="@+id/search_background"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/background_dark" />
+            android:background="?attr/colorPrimary" />
 
         <SearchView
             android:id="@+id/search_view"
@@ -59,8 +59,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="?android:actionBarSize"
-        android:background="@color/background_dark"
-        android:elevation="@dimen/z_app_bar">
+        android:background="@android:color/white"
+        android:elevation="@dimen/appbar_elevation">
 
         <ProgressBar
             android:id="@android:id/empty"
