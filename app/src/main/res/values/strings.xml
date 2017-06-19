@@ -9,6 +9,7 @@
     <string name="pref_loaded_num_of_characters">loaded_num_of_characters</string>
 
     <string name="search">Search</string>
+    <string name="hero_of_the_day">Hero of the day - %1$s!</string>
 
     <!-- transition shared elements -->
     <string name="transition_search_back" translatable="false">transition_search_back</string>

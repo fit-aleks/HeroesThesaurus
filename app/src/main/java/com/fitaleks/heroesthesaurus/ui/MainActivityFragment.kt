@@ -3,7 +3,9 @@ package com.fitaleks.heroesthesaurus.ui
 import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.design.widget.AppBarLayout
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -16,14 +18,14 @@ import java.util.*
 
 class MainActivityFragment : LifecycleFragment() {
 
-    private val recyclerView: RecyclerView by lazy {
+    private val charactersRecyclerView: RecyclerView by lazy {
         view?.findViewById(R.id.recycler_view) as RecyclerView
     }
     private val swipeRefresh: SwipeRefreshLayout by lazy {
         view?.findViewById(R.id.swipe_refresh) as SwipeRefreshLayout
     }
 
-    private var mAdapter: CharactersListAdapter = CharactersListAdapter(ArrayList<MarvelCharacter>())
+    private var mAdapter: CharactersListAdapter = CharactersListAdapter(ArrayList<MarvelCharacter>()).apply { setUseCharOfDay(true) }
     private var mLinearLayoutManager: LinearLayoutManager? = null
     private var loading = true
     private var previousTotal = 0
@@ -72,10 +74,22 @@ class MainActivityFragment : LifecycleFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mLinearLayoutManager = LinearLayoutManager(activity)
-        recyclerView.layoutManager = mLinearLayoutManager
-        recyclerView.addOnScrollListener(listen)
-        recyclerView.adapter = mAdapter
+        charactersRecyclerView.layoutManager = mLinearLayoutManager
+        charactersRecyclerView.addOnScrollListener(listen)
+        charactersRecyclerView.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        charactersRecyclerView.adapter = mAdapter
         swipeRefresh.isEnabled = false
+
+        val appBarView: AppBarLayout? = activity.findViewById(R.id.appbar) as AppBarLayout
+        charactersRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if (charactersRecyclerView.computeVerticalScrollOffset() == 0) {
+                    appBarView?.elevation = 0f
+                } else {
+                    appBarView?.elevation = resources.getDimension(R.dimen.appbar_elevation)
+                }
+            }
+        })
 
         val charactersViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
         charactersViewModel.getCharactersData()?.observe(this, android.arch.lifecycle.Observer { t -> t?.let { mAdapter.addCharacters(it) } })
@@ -87,7 +101,7 @@ class MainActivityFragment : LifecycleFragment() {
     }
 
     override fun onDestroyView() {
-        recyclerView.removeOnScrollListener(listen)
+        charactersRecyclerView.clearOnScrollListeners()
         super.onDestroyView()
     }
 

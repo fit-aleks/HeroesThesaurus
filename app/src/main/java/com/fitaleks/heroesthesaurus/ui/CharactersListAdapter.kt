@@ -14,22 +14,45 @@ import com.fitaleks.heroesthesaurus.data.MarvelCharacter
 /**
  * Created by alexanderkulikovskiy on 20.06.15.
  */
-class CharactersListAdapter(private val mDataset: MutableList<MarvelCharacter>) : RecyclerView.Adapter<CharactersListAdapter.PhotoViewHolder>() {
+class CharactersListAdapter(private val mDataset: MutableList<MarvelCharacter>) : RecyclerView.Adapter<CharactersListAdapter.CharacterViewHolder>() {
+    private val VIEW_TYPE_CHARACTER_Of_THE_DAY = 0
+    private val VIEW_TYPE_CHARACTER = 1
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.character_item_photo, parent, false)
-        return PhotoViewHolder(view)
+    private var useCharOfDay = false
+
+    fun setUseCharOfDay(isUsing: Boolean) {
+        useCharOfDay = isUsing
     }
 
-    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
+        var characterLayout: Int
+        if (viewType == VIEW_TYPE_CHARACTER_Of_THE_DAY) {
+            characterLayout = R.layout.item_character_of_the_day
+        } else {
+            characterLayout = R.layout.character_item_photo
+        }
+        val view = LayoutInflater.from(parent.context)
+                .inflate(characterLayout, parent, false)
+        return CharacterViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         val character = mDataset[position]
-        holder.mName.text = character.name
+        if (holder.itemViewType == VIEW_TYPE_CHARACTER_Of_THE_DAY) {
+            holder.mName.text = holder.mName.context.getString(R.string.hero_of_the_day, character.name)
+        } else {
+            holder.mName.text = character.name
+        }
+
         holder.mDescription.text = character.description
         Glide.with(holder.mImageView.context)
                 .load("${character.thumbnail?.path}.${character.thumbnail?.extension}")
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.mImageView)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (useCharOfDay && position == 0) VIEW_TYPE_CHARACTER_Of_THE_DAY else VIEW_TYPE_CHARACTER
     }
 
     override fun getItemCount(): Int {
@@ -46,7 +69,7 @@ class CharactersListAdapter(private val mDataset: MutableList<MarvelCharacter>) 
         notifyDataSetChanged()
     }
 
-    class PhotoViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+    class CharacterViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val mImageView: ImageView by lazy { v.findViewById(R.id.img) as ImageView }
         val mDescription: TextView by lazy { v.findViewById(R.id.description) as TextView }
         val mName: TextView by lazy { v.findViewById(R.id.name) as TextView }
