@@ -23,6 +23,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Some hero name"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val appbarImageView = findViewById(R.id.details_appbar_image) as ImageView
         Glide.with(this)
