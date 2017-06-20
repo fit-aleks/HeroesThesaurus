@@ -1,5 +1,6 @@
 package com.fitaleks.heroesthesaurus.ui
 
+import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -43,10 +44,10 @@ class CharactersListAdapter(private val mDataset: MutableList<MarvelCharacter>) 
         } else {
             holder.mName.text = character.name
         }
-
+        holder.character = character
         holder.mDescription.text = character.description
         Glide.with(holder.mImageView.context)
-                .load("${character.thumbnail?.path}.${character.thumbnail?.extension}")
+                .load(character.getStandardImagePath())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.mImageView)
     }
@@ -69,10 +70,21 @@ class CharactersListAdapter(private val mDataset: MutableList<MarvelCharacter>) 
         notifyDataSetChanged()
     }
 
-    class CharacterViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+    class CharacterViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
         val mImageView: ImageView by lazy { v.findViewById(R.id.img) as ImageView }
         val mDescription: TextView by lazy { v.findViewById(R.id.description) as TextView }
         val mName: TextView by lazy { v.findViewById(R.id.name) as TextView }
+        var character: MarvelCharacter? = null
+
+        init {
+            v.setOnClickListener(this)
+        }
+
+        override fun onClick(v: View) {
+            v.context.startActivity(Intent(v.context, CharacterDetailsActivity::class.java).apply {
+                putExtra(CharacterDetailsActivity.PARAM_HERO_IMAGE_URL, character?.getStandardImagePath())
+            })
+        }
     }
 
 }

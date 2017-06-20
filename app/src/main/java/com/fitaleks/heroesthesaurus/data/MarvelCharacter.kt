@@ -20,6 +20,8 @@ class MarvelCharacter(@SerializedName("id") val marvelId: Long,
         return this.name.compareTo(other.name)
     }
 
+    fun getStandardImagePath() : String = "${thumbnail?.path}.${thumbnail?.extension}"
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
 
