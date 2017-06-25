@@ -24,6 +24,6 @@ class DetailsAdapter(val numOfElems: Int) : RecyclerView.Adapter<DetailsAdapter.
     }
 
     override fun onBindViewHolder(holder: DetailsViewHolder, position: Int) {
-        holder.mName.text = "$position"
+        holder.mName.text = "a lot of some text just to check some of my ideassome of my ideassome of my ideassome of my ideas$position"
     }
 }
