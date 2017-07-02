@@ -11,4 +11,5 @@ import com.fitaleks.heroesthesaurus.data.source.CharactersRepository
 class CharactersViewModel : ViewModel() {
     fun getCharactersData(): LiveData<List<MarvelCharacter>>? = CharactersRepository.getCharacters()
     fun searchForCharacters(query: String): LiveData<List<MarvelCharacter>> = CharactersRepository.searchForCharacters(query)
+    fun getCharacter(characterId: Long): LiveData<MarvelCharacter> = CharactersRepository.getCharacter(characterId)
 }

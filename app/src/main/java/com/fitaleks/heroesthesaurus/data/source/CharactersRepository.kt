@@ -52,4 +52,19 @@ object CharactersRepository {
         return mutableLiveData
     }
 
+    fun getCharacter(characterId: Long) : LiveData<MarvelCharacter> {
+        val mutableLiveData: MutableLiveData<MarvelCharacter> = MutableLiveData()
+        NetworkHelper.restAdapter
+                .getCharacter(characterId)
+                .enqueue(object : Callback<List<MarvelCharacter>> {
+                    override fun onResponse(call: Call<List<MarvelCharacter>>?, response: Response<List<MarvelCharacter>>?) {
+                        response?.body()?.let { mutableLiveData.value = it[0] }
+                    }
+
+                    override fun onFailure(call: Call<List<MarvelCharacter>>?, t: Throwable?) {
+                    }
+                })
+        return mutableLiveData
+    }
+
 }

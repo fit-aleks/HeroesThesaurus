@@ -11,7 +11,8 @@ class MarvelCharacter(@SerializedName("id") val marvelId: Long,
                       val name: String,
                       val description: String,
                       var imageUrl: String,
-                      val lastModifiedDate: String = "") : Comparable<MarvelCharacter> {
+                      val lastModifiedDate: String = "",
+                      @SerializedName("comics") val comics: ComicsOfCharacter) : Comparable<MarvelCharacter> {
 
     @SerializedName("thumbnail")
     var thumbnail: Thumbnail? = null
@@ -20,7 +21,7 @@ class MarvelCharacter(@SerializedName("id") val marvelId: Long,
         return this.name.compareTo(other.name)
     }
 
-    fun getStandardImagePath() : String = "${thumbnail?.path}.${thumbnail?.extension}"
+    fun getStandardImagePath(): String = "${thumbnail?.path}.${thumbnail?.extension}"
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -46,3 +47,5 @@ class MarvelCharacter(@SerializedName("id") val marvelId: Long,
 }
 
 data class Thumbnail(val path: String, val extension: String)
+data class ComicsOfCharacter(val available: Int, @SerializedName("collectionURI") val collectionUri: String, val items: List<ComicsReferenceItem>)
+data class ComicsReferenceItem(@SerializedName("name") val title: String, @SerializedName("resourceURI") val resourceUri: String)
