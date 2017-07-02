@@ -55,7 +55,6 @@ class CharacterDetailsFragment : LifecycleFragment() {
                     (activity as AppCompatActivity).supportActionBar?.title = t.name
                     adapter.replaceDataWith(t.comics.items)
                 } })
-
     }
 
     companion object {
