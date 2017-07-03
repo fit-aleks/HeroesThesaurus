@@ -23,14 +23,10 @@
             android:name=".ui.SearchActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.Translucent.Search" />
-        <activity android:name=".ui.CharacterDetailsActivity"
-            android:theme="@style/AppTheme.Details"
-            android:parentActivityName=".ui.MainActivity"/>
-
-        <!--<provider
-            android:authorities="com.fitaleks.heroesthesaurus.database.CharactersProvider"
-            android:name="com.fitaleks.heroesthesaurus.provider.CharactersProvider"
-            android:exported="false"/>-->
+        <activity
+            android:name=".ui.CharacterDetailsActivity"
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppTheme.Details" />
     </application>
 
 </manifest>

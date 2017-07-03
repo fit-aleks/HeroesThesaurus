@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.fitaleks.heroesthesaurus.R
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
 import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
@@ -49,6 +50,7 @@ class CharacterDetailsFragment : LifecycleFragment() {
         val appbarImageView = activity.findViewById(R.id.details_appbar_image) as ImageView
         Glide.with(this)
                 .load(character.getStandardImagePath())
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(appbarImageView)
         (activity as AppCompatActivity).supportActionBar?.title = character.name
 
