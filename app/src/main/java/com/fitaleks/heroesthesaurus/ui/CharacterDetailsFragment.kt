@@ -1,6 +1,7 @@
 package com.fitaleks.heroesthesaurus.ui
 
 import android.arch.lifecycle.LifecycleFragment
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
@@ -13,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.fitaleks.heroesthesaurus.R
+import com.fitaleks.heroesthesaurus.data.MarvelCharacter
 import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
 
 /**
@@ -24,15 +26,13 @@ class CharacterDetailsFragment : LifecycleFragment() {
         return inflater.inflate(R.layout.fragment_character_details, container, false)
     }
 
-    private val adapter = DetailsAdapter(0)
+    private val adapter = DetailsAdapter()
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val heroDetailsRecyclerView = view?.findViewById(R.id.details_nested_scroll) as RecyclerView
         val layoutManager = GridLayoutManager(context, 2)
-//        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
-//            override fun getSpanSize(position: Int) = if (position == 0) 2 else 1
-//        }
+
         heroDetailsRecyclerView.layoutManager = layoutManager
         heroDetailsRecyclerView.setHasFixedSize(true)
         heroDetailsRecyclerView.adapter = adapter
@@ -45,22 +45,26 @@ class CharacterDetailsFragment : LifecycleFragment() {
                 }
             }
         })
-        val charactersViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
-        charactersViewModel.getCharacter(arguments.getLong(PARAM_CHARACTER_ID))
-                .observe(this, android.arch.lifecycle.Observer { t -> t?.let {
-                    val appbarImageView = activity.findViewById(R.id.details_appbar_image) as ImageView
-                    Glide.with(this)
-                            .load(t.getStandardImagePath())
-                            .into(appbarImageView)
-                    (activity as AppCompatActivity).supportActionBar?.title = t.name
-                    adapter.replaceDataWith(t.comics.items)
-                } })
+        val character = arguments.getParcelable<MarvelCharacter>(PARAM_CHARACTER)
+        val appbarImageView = activity.findViewById(R.id.details_appbar_image) as ImageView
+        Glide.with(this)
+                .load(character.getStandardImagePath())
+                .into(appbarImageView)
+        (activity as AppCompatActivity).supportActionBar?.title = character.name
+
+        val comicsViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
+        comicsViewModel.getComicsByCharacter(character.marvelId)
+                .observe(this, Observer { t ->
+                    t?.let {
+                        adapter.replaceDataWith(t)
+                    }
+                })
     }
 
     companion object {
-        val PARAM_CHARACTER_ID = "character_id"
-        fun newInstance(characterId: Long): CharacterDetailsFragment = CharacterDetailsFragment().apply {
-            arguments = Bundle().apply { putLong(PARAM_CHARACTER_ID, characterId) }
+        val PARAM_CHARACTER = "character"
+        fun newInstance(character: MarvelCharacter): CharacterDetailsFragment = CharacterDetailsFragment().apply {
+            arguments = Bundle().apply { putParcelable(PARAM_CHARACTER, character) }
         }
     }
 }

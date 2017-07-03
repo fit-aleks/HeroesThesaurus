@@ -3,6 +3,7 @@ package com.fitaleks.heroesthesaurus.viewmodel
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.ViewModel
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
+import com.fitaleks.heroesthesaurus.data.MarvelComics
 import com.fitaleks.heroesthesaurus.data.source.CharactersRepository
 
 /**
@@ -12,4 +13,5 @@ class CharactersViewModel : ViewModel() {
     fun getCharactersData(): LiveData<List<MarvelCharacter>>? = CharactersRepository.getCharacters()
     fun searchForCharacters(query: String): LiveData<List<MarvelCharacter>> = CharactersRepository.searchForCharacters(query)
     fun getCharacter(characterId: Long): LiveData<MarvelCharacter> = CharactersRepository.getCharacter(characterId)
+    fun getComicsByCharacter(characterId: Long): LiveData<List<MarvelComics>> = CharactersRepository.getComicsByCharacter(characterId)
 }

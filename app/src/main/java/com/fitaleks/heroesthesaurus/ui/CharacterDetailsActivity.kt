@@ -5,6 +5,7 @@ import android.support.design.widget.CollapsingToolbarLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import com.fitaleks.heroesthesaurus.R
+import com.fitaleks.heroesthesaurus.data.MarvelCharacter
 
 /**
  * Created by Alexander on 19.06.17.
@@ -12,7 +13,7 @@ import com.fitaleks.heroesthesaurus.R
 class CharacterDetailsActivity : AppCompatActivity() {
 
     companion object {
-        val PARAM_HERO_ID = "hero_id"
+        val PARAM_HERO = "hero"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +22,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
         setupAppbar()
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, CharacterDetailsFragment.newInstance(intent.getLongExtra(PARAM_HERO_ID, 0)))
+                .replace(R.id.fragment_container, CharacterDetailsFragment.newInstance(intent.getParcelableExtra<MarvelCharacter>(PARAM_HERO)))
                 .commit()
     }
 

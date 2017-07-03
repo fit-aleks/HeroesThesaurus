@@ -3,6 +3,7 @@ package com.fitaleks.heroesthesaurus.data.source
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
+import com.fitaleks.heroesthesaurus.data.MarvelComics
 import com.fitaleks.heroesthesaurus.network.NetworkHelper
 import retrofit2.Call
 import retrofit2.Callback
@@ -62,6 +63,21 @@ object CharactersRepository {
                     }
 
                     override fun onFailure(call: Call<List<MarvelCharacter>>?, t: Throwable?) {
+                    }
+                })
+        return mutableLiveData
+    }
+
+    fun getComicsByCharacter(characterId: Long): LiveData<List<MarvelComics>> {
+        val mutableLiveData: MutableLiveData<List<MarvelComics>> = MutableLiveData()
+        NetworkHelper.restAdapter
+                .getComicsByCharacter(characterId)
+                .enqueue(object : Callback<List<MarvelComics>>{
+                    override fun onFailure(call: Call<List<MarvelComics>>?, t: Throwable?) {
+                    }
+
+                    override fun onResponse(call: Call<List<MarvelComics>>?, response: Response<List<MarvelComics>>) {
+                        mutableLiveData.value = response.body()
                     }
                 })
         return mutableLiveData

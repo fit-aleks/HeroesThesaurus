@@ -82,7 +82,7 @@ class CharactersListAdapter(private val mDataset: MutableList<MarvelCharacter>) 
 
         override fun onClick(v: View) {
             v.context.startActivity(Intent(v.context, CharacterDetailsActivity::class.java).apply {
-                putExtra(CharacterDetailsActivity.PARAM_HERO_ID, character?.marvelId)
+                putExtra(CharacterDetailsActivity.PARAM_HERO, character)
             })
         }
     }

@@ -1,6 +1,7 @@
 package com.fitaleks.heroesthesaurus.network
 
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
+import com.fitaleks.heroesthesaurus.data.MarvelComics
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -17,6 +18,9 @@ interface MarvelFetchService {
 
     @GET("characters/{characterId}")
     fun getCharacter(@Path("characterId") characterId: Long): Call<List<MarvelCharacter>>
+
+    @GET("characters/{characterId}/comics")
+    fun getComicsByCharacter(@Path("characterId") characterId: Long): Call<List<MarvelComics>>
 
     @GET("characters")
     fun getCharacters(@Query("orderBy") orderBy: String,

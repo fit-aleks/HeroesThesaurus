@@ -14,6 +14,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.io.IOException
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
+import java.util.concurrent.TimeUnit
 
 /**
  * Created by alexander on 21.08.15.
@@ -41,11 +42,13 @@ object NetworkHelper {
                 chain.proceed(request)
             }
 
-            val loggingInterceptor1 = HttpLoggingInterceptor()
-            loggingInterceptor1.level = HttpLoggingInterceptor.Level.BODY
+            val loggingInterceptor = HttpLoggingInterceptor()
+            loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             val okHttpClient = OkHttpClient.Builder()
                     .addInterceptor(requestInterceptor)
-                    .addInterceptor(loggingInterceptor1)
+                    .addInterceptor(loggingInterceptor)
+                    .connectTimeout(15, TimeUnit.SECONDS)
+                    .readTimeout(15, TimeUnit.SECONDS)
                     .build()
 
             val restAdapter = Retrofit.Builder()
