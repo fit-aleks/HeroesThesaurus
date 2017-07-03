@@ -2,6 +2,7 @@ package com.fitaleks.heroesthesaurus.data.source
 
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
+import android.util.Log
 import com.fitaleks.heroesthesaurus.data.MarvelCharacter
 import com.fitaleks.heroesthesaurus.data.MarvelComics
 import com.fitaleks.heroesthesaurus.network.NetworkHelper
@@ -14,6 +15,7 @@ import java.util.*
  * Created by Alexander on 01.12.16.
  */
 object CharactersRepository {
+    private val LOG_TAG: String = CharactersRepository::class.java.simpleName
     // temporary hardcoded
     private val maxAvailableNumOfCharacters = 1465
 
@@ -53,7 +55,7 @@ object CharactersRepository {
         return mutableLiveData
     }
 
-    fun getCharacter(characterId: Long) : LiveData<MarvelCharacter> {
+    fun getCharacter(characterId: Long): LiveData<MarvelCharacter> {
         val mutableLiveData: MutableLiveData<MarvelCharacter> = MutableLiveData()
         NetworkHelper.restAdapter
                 .getCharacter(characterId)
@@ -72,8 +74,10 @@ object CharactersRepository {
         val mutableLiveData: MutableLiveData<List<MarvelComics>> = MutableLiveData()
         NetworkHelper.restAdapter
                 .getComicsByCharacter(characterId)
-                .enqueue(object : Callback<List<MarvelComics>>{
+                .enqueue(object : Callback<List<MarvelComics>> {
                     override fun onFailure(call: Call<List<MarvelComics>>?, t: Throwable?) {
+                        Log.d(LOG_TAG, "Retrying: ${call?.toString()}")
+                        call?.clone()?.enqueue(this)
                     }
 
                     override fun onResponse(call: Call<List<MarvelComics>>?, response: Response<List<MarvelComics>>) {
