@@ -8,4 +8,6 @@
     <dimen name="spacing_huge">64dp</dimen>
     <dimen name="padding_normal">16dp</dimen>
     <dimen name="appbar_elevation">8dp</dimen>
+    
+    <item name="comics_image_aspect_ratio" format="float" type="dimen">.675</item>
 </resources>

@@ -2,4 +2,6 @@
 <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/details_nested_scroll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:paddingTop="@dimen/small_vertical_margin"
+    android:clipToPadding="false"/>

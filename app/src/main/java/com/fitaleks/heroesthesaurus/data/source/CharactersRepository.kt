@@ -29,6 +29,7 @@ object CharactersRepository {
                 .getCharacters("name", Random().nextInt(maxAvailableNumOfCharacters).toLong())
                 .enqueue(object : Callback<List<MarvelCharacter>> {
                     override fun onFailure(call: Call<List<MarvelCharacter>>?, t: Throwable?) {
+                        call?.clone()?.enqueue(this)
                     }
 
                     override fun onResponse(call: Call<List<MarvelCharacter>>?, response: Response<List<MarvelCharacter>>) {

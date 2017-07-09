@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
-    <ImageView
+
+    <com.fitaleks.heroesthesaurus.ui.widget.AspectLockedImageView
         android:id="@+id/cover"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        app:imageAspectRatio="@dimen/comics_image_aspect_ratio"
+        tools:layout_height="300dp" />
 
     <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/small_vertical_margin"
+        android:gravity="center_horizontal"
+        tools:text="Some long title of the comics book" />
 
 </LinearLayout>
