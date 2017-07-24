@@ -9,14 +9,14 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.fitaleks.heroesthesaurus.R
-import com.fitaleks.heroesthesaurus.data.MarvelComics
+import com.fitaleks.heroesthesaurus.data.MtgCard
 
 /**
  * Created by Alexander on 19.06.17.
  */
 class DetailsAdapter : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() {
 
-    private var listOfComics: List<MarvelComics>? = null
+    private var listOfComics: List<MtgCard>? = null
 
     class DetailsViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val mName by lazy { v.findViewById(R.id.title) as TextView }
@@ -31,15 +31,20 @@ class DetailsAdapter : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() 
     }
 
     override fun onBindViewHolder(holder: DetailsViewHolder, position: Int) {
-        holder.mName.text = listOfComics?.get(position)?.title ?: ""
+        holder.mName.text = listOfComics?.get(position)?.name ?: ""
         Glide.with(holder.img.context)
-                .load(listOfComics?.get(position)?.getStandardImagePath())
+                .load(listOfComics?.get(position)?.imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.img)
     }
 
-    fun replaceDataWith(comics: List<MarvelComics>) {
-        listOfComics = comics
+    fun replaceDataWith(cards: List<MtgCard>) {
+        listOfComics = cards
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        listOfComics = null
         notifyDataSetChanged()
     }
 }

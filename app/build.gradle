@@ -12,8 +12,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", "MARVEL_PUB_API_KEY", apiKeys.pubApiKey
-        buildConfigField "String", "MARVEL_SECRET_API_KEY", apiKeys.secretApiKey
+        buildConfigField "String", "API_KEY", apiKeys.pubApiKey
+//        buildConfigField "String", "MARVEL_SECRET_API_KEY", apiKeys.secretApiKey
     }
     buildTypes {
         release {

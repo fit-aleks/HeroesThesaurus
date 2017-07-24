@@ -2,7 +2,6 @@ package com.fitaleks.heroesthesaurus.ui
 
 import android.app.SharedElementCallback
 import android.arch.lifecycle.LifecycleActivity
-import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Point
 import android.os.Bundle
@@ -16,12 +15,11 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
 import android.widget.SearchView
 import com.fitaleks.heroesthesaurus.R
-import com.fitaleks.heroesthesaurus.data.MarvelCharacter
+import com.fitaleks.heroesthesaurus.data.MtgCard
 import com.fitaleks.heroesthesaurus.util.ImeUtils
 import com.fitaleks.heroesthesaurus.util.TransitionUtils
 import com.fitaleks.heroesthesaurus.util.transitions.CircularReveal
 import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
-import java.util.*
 
 /**
  * Created by Alexander on 02.12.16.
@@ -31,7 +29,7 @@ class SearchActivity : LifecycleActivity() {
     private val searchBack: ImageButton by lazy { findViewById(R.id.searchback) as ImageButton }
     private val searchView: SearchView by lazy { findViewById(R.id.search_view) as SearchView }
     private val recyclerView: RecyclerView by lazy { findViewById(R.id.search_results) as RecyclerView }
-    private val adapter = CharactersListAdapter(ArrayList<MarvelCharacter>())
+    private val adapter = DetailsAdapter()
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(CharactersViewModel::class.java)
     }
@@ -89,16 +87,17 @@ class SearchActivity : LifecycleActivity() {
 
     private fun searchFor(query: String) {
         clearResults()
-        viewModel.searchForCharacters(query).observe(this, Observer { it -> it?.let { processResult(it) } })
+        //TODO - implement search
+//        viewModel.searchForCharacters(query).observe(this, Observer { it -> it?.let { processResult(it) } })
     }
 
-    private fun processResult(characters: List<MarvelCharacter>) {
+    private fun processResult(characters: List<MtgCard>) {
         if (characters.isEmpty()) {
             // Show a message indicating there are no characters for that filter type.
             // processEmptyTasks();
         } else {
             // Show the list of characters
-            adapter.addCharacters(characters)
+            adapter.replaceDataWith(characters)
             ImeUtils.hideIme(searchView)
             // Set the filter label's text.
             // showFilterLabel();

@@ -12,7 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.fitaleks.heroesthesaurus.R
-import com.fitaleks.heroesthesaurus.data.MarvelCharacter
+import com.fitaleks.heroesthesaurus.data.MtgSet
 import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
 import java.util.*
 
@@ -25,7 +25,7 @@ class MainActivityFragment : LifecycleFragment() {
         view?.findViewById(R.id.swipe_refresh) as SwipeRefreshLayout
     }
 
-    private var mAdapter: CharactersListAdapter = CharactersListAdapter(ArrayList<MarvelCharacter>()).apply { setUseCharOfDay(true) }
+    private var mAdapter: CharactersListAdapter = CharactersListAdapter(ArrayList<MtgSet>()).apply { setUseCharOfDay(true) }
     private var mLinearLayoutManager: LinearLayoutManager? = null
     private var loading = true
     private var previousTotal = 0
@@ -81,7 +81,7 @@ class MainActivityFragment : LifecycleFragment() {
         swipeRefresh.isEnabled = false
 
         val appBarView: AppBarLayout? = activity.findViewById(R.id.appbar) as AppBarLayout
-        charactersRecyclerView.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+        charactersRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 if (charactersRecyclerView.computeVerticalScrollOffset() == 0) {
                     appBarView?.elevation = 0f
@@ -91,8 +91,16 @@ class MainActivityFragment : LifecycleFragment() {
             }
         })
 
-        val charactersViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
-        charactersViewModel.getCharactersData()?.observe(this, android.arch.lifecycle.Observer { t -> t?.let { mAdapter.addCharacters(it) } })
+//        val charactersViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
+//        charactersViewModel.getCharactersData()?.observe(this, android.arch.lifecycle.Observer { t -> t?.let { mAdapter.addCharacters(it) } })
+
+        val setsViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
+        setsViewModel.getSets().observe(this, android.arch.lifecycle.Observer { t ->
+            t?.filter { set -> set.type != "promo" && set.type != "reprint" && set.type != "box"}
+                    ?.let {
+                        mAdapter.addCharacters(it)
+                    }
+        })
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

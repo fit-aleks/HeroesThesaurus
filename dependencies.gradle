@@ -1,4 +1,4 @@
 ext.apiKeys = [
-	pubApiKey : "\"e01415b0c05a71c13ee5365dbd7eba9c\"",
-	secretApiKey : "\"8178214f0d366a56f113e92cf4d00fd601807763\""
+	pubApiKey : "\"9cc3f6769df2fe7914f8b598ed027c9b3e270470\"",
+//	secretApiKey : "\"8178214f0d366a56f113e92cf4d00fd601807763\""
 ]

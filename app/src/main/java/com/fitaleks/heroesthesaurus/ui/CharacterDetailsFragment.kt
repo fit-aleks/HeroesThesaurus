@@ -12,10 +12,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.fitaleks.heroesthesaurus.R
-import com.fitaleks.heroesthesaurus.data.MarvelCharacter
+import com.fitaleks.heroesthesaurus.data.MtgSet
 import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
 
 /**
@@ -46,17 +44,18 @@ class CharacterDetailsFragment : LifecycleFragment() {
                 }
             }
         })
-        val character = arguments.getParcelable<MarvelCharacter>(PARAM_CHARACTER)
+        val character = arguments.getParcelable<MtgSet>(PARAM_SET)
         val appbarImageView = activity.findViewById(R.id.details_appbar_image) as ImageView
-        Glide.with(this)
-                .load(character.getStandardImagePath())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                .into(appbarImageView)
+//        Glide.with(this)
+//                .load(character.imageUrl)
+//                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+//                .into(appbarImageView)
         (activity as AppCompatActivity).supportActionBar?.title = character.name
 
         val comicsViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
-        comicsViewModel.getComicsByCharacter(character.marvelId)
-                .observe(this, Observer { t ->
+        //TODO - implement request certain hero
+        comicsViewModel.getCharactersData(character.code)
+                ?.observe(this, Observer { t ->
                     t?.let {
                         adapter.replaceDataWith(t)
                     }
@@ -64,9 +63,9 @@ class CharacterDetailsFragment : LifecycleFragment() {
     }
 
     companion object {
-        val PARAM_CHARACTER = "character"
-        fun newInstance(character: MarvelCharacter): CharacterDetailsFragment = CharacterDetailsFragment().apply {
-            arguments = Bundle().apply { putParcelable(PARAM_CHARACTER, character) }
+        val PARAM_SET = "mtgSet"
+        fun newInstance(character: MtgSet): CharacterDetailsFragment = CharacterDetailsFragment().apply {
+            arguments = Bundle().apply { putParcelable(PARAM_SET, character) }
         }
     }
 }
