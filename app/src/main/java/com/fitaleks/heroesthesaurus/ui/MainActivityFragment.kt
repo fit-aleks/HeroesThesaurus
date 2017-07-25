@@ -8,9 +8,11 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.fitaleks.heroesthesaurus.PATH_TO_ICONS
 import com.fitaleks.heroesthesaurus.R
 import com.fitaleks.heroesthesaurus.data.MtgSet
 import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
@@ -71,6 +73,8 @@ class MainActivityFragment : LifecycleFragment() {
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
+    private val TAG: String = MainActivityFragment::class.java.simpleName
+
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mLinearLayoutManager = LinearLayoutManager(activity)
@@ -95,9 +99,17 @@ class MainActivityFragment : LifecycleFragment() {
 //        charactersViewModel.getCharactersData()?.observe(this, android.arch.lifecycle.Observer { t -> t?.let { mAdapter.addCharacters(it) } })
 
         val setsViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
+        val listOfAllIcons = resources.assets.list(PATH_TO_ICONS)
         setsViewModel.getSets().observe(this, android.arch.lifecycle.Observer { t ->
-            t?.filter { set -> set.type != "promo" && set.type != "reprint" && set.type != "box"}
+            t?.filter { set ->
+                if (!listOfAllIcons.contains(set.imageName())) {
+                    Log.d(TAG, "${set.imageName()} has no icon")
+                }
+
+                set.type != "promo" && set.type != "reprint" && set.type != "box" && listOfAllIcons.contains(set.imageName())
+            }
                     ?.let {
+                        Log.d(TAG, "num of elems = ${it.size}")
                         mAdapter.addCharacters(it)
                     }
         })

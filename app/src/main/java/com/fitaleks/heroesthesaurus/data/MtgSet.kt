@@ -31,6 +31,8 @@ data class MtgSet(val code: String,
         parcel.writeString(type)
     }
 
+    fun imageName() = "set_icon_$code.png"
+
     override fun describeContents(): Int {
         return 0
     }
