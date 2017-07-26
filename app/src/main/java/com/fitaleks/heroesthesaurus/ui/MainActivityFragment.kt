@@ -27,7 +27,7 @@ class MainActivityFragment : LifecycleFragment() {
         view?.findViewById(R.id.swipe_refresh) as SwipeRefreshLayout
     }
 
-    private var mAdapter: CharactersListAdapter = CharactersListAdapter(ArrayList<MtgSet>()).apply { setUseCharOfDay(true) }
+    private var mAdapter: SetsListAdapter = SetsListAdapter(ArrayList<MtgSet>()).apply { setUseCharOfDay(true) }
     private var mLinearLayoutManager: LinearLayoutManager? = null
     private var loading = true
     private var previousTotal = 0

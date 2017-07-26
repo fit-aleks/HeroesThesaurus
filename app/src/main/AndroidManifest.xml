@@ -24,7 +24,7 @@
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.Translucent.Search" />
         <activity
-            android:name=".ui.CharacterDetailsActivity"
+            android:name=".ui.SetContentActivity"
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.Details" />
     </application>

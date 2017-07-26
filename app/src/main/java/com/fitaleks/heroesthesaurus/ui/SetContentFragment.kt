@@ -19,7 +19,7 @@ import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
 /**
  * Created by Alexander on 19.06.17.
  */
-class CharacterDetailsFragment : LifecycleFragment() {
+class SetContentFragment : LifecycleFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_character_details, container, false)
@@ -64,7 +64,7 @@ class CharacterDetailsFragment : LifecycleFragment() {
 
     companion object {
         val PARAM_SET = "mtgSet"
-        fun newInstance(character: MtgSet): CharacterDetailsFragment = CharacterDetailsFragment().apply {
+        fun newInstance(character: MtgSet): SetContentFragment = SetContentFragment().apply {
             arguments = Bundle().apply { putParcelable(PARAM_SET, character) }
         }
     }

@@ -17,7 +17,7 @@ import java.util.*
 /**
  * Created by alexanderkulikovskiy on 20.06.15.
  */
-class CharactersListAdapter(private val mDataset: MutableList<MtgSet>) : RecyclerView.Adapter<CharactersListAdapter.CharacterViewHolder>() {
+class SetsListAdapter(private val mDataset: MutableList<MtgSet>) : RecyclerView.Adapter<SetsListAdapter.CharacterViewHolder>() {
     private val VIEW_TYPE_CHARACTER_Of_THE_DAY = 0
     private val VIEW_TYPE_CHARACTER = 1
 
@@ -85,8 +85,8 @@ class CharactersListAdapter(private val mDataset: MutableList<MtgSet>) : Recycle
         }
 
         override fun onClick(v: View) {
-            v.context.startActivity(Intent(v.context, CharacterDetailsActivity::class.java).apply {
-                putExtra(CharacterDetailsActivity.PARAM_SET, mtgSet)
+            v.context.startActivity(Intent(v.context, SetContentActivity::class.java).apply {
+                putExtra(SetContentActivity.PARAM_SET, mtgSet)
             })
         }
     }

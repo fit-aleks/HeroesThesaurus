@@ -10,7 +10,7 @@ import com.fitaleks.heroesthesaurus.data.MtgSet
 /**
  * Created by Alexander on 19.06.17.
  */
-class CharacterDetailsActivity : AppCompatActivity() {
+class SetContentActivity : AppCompatActivity() {
 
     companion object {
         val PARAM_SET = "set"
@@ -22,7 +22,7 @@ class CharacterDetailsActivity : AppCompatActivity() {
         setupAppbar()
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, CharacterDetailsFragment.newInstance(intent.getParcelableExtra<MtgSet>(PARAM_SET)))
+                .replace(R.id.fragment_container, SetContentFragment.newInstance(intent.getParcelableExtra<MtgSet>(PARAM_SET)))
                 .commit()
     }
 
