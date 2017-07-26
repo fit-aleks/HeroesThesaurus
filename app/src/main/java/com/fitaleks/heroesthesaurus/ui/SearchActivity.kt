@@ -26,9 +26,9 @@ import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
  */
 class SearchActivity : LifecycleActivity() {
 
-    private val searchBack: ImageButton by lazy { findViewById(R.id.searchback) as ImageButton }
-    private val searchView: SearchView by lazy { findViewById(R.id.search_view) as SearchView }
-    private val recyclerView: RecyclerView by lazy { findViewById(R.id.search_results) as RecyclerView }
+    private val searchBack: ImageButton by lazy { findViewById<ImageButton>(R.id.searchback) }
+    private val searchView: SearchView by lazy { findViewById<SearchView>(R.id.search_view) }
+    private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.search_results) }
     private val adapter = DetailsAdapter()
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(CharactersViewModel::class.java)

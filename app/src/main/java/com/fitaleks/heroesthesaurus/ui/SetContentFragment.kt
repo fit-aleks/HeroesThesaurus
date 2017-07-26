@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.bumptech.glide.Glide
 import com.fitaleks.heroesthesaurus.R
 import com.fitaleks.heroesthesaurus.data.MtgSet
 import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
@@ -27,9 +28,9 @@ class SetContentFragment : LifecycleFragment() {
 
     private val adapter = DetailsAdapter()
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val heroDetailsRecyclerView = view?.findViewById(R.id.details_nested_scroll) as RecyclerView
+        val heroDetailsRecyclerView = view.findViewById<RecyclerView>(R.id.details_nested_scroll)
         val layoutManager = GridLayoutManager(context, 2)
 
         heroDetailsRecyclerView.layoutManager = layoutManager
@@ -40,21 +41,19 @@ class SetContentFragment : LifecycleFragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                    (activity.findViewById(R.id.appbar) as AppBarLayout).setExpanded(true)
+                    (activity.findViewById<AppBarLayout>(R.id.appbar)).setExpanded(true)
                 }
             }
         })
-        val character = arguments.getParcelable<MtgSet>(PARAM_SET)
-        val appbarImageView = activity.findViewById(R.id.details_appbar_image) as ImageView
-//        Glide.with(this)
-//                .load(character.imageUrl)
-//                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-//                .into(appbarImageView)
-        (activity as AppCompatActivity).supportActionBar?.title = character.name
+        val mtgSet = arguments.getParcelable<MtgSet>(PARAM_SET)
+        val appbarImageView = activity.findViewById<ImageView>(R.id.details_appbar_image)
+        Glide.with(this)
+                .load(mtgSet.imageName())
+                .into(appbarImageView)
+        (activity as AppCompatActivity).supportActionBar?.title = mtgSet.name
 
         val comicsViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
-        //TODO - implement request certain hero
-        comicsViewModel.getCharactersData(character.code)
+        comicsViewModel.getCharactersData(mtgSet.code)
                 ?.observe(this, Observer { t ->
                     t?.let {
                         adapter.replaceDataWith(t)
@@ -64,8 +63,8 @@ class SetContentFragment : LifecycleFragment() {
 
     companion object {
         val PARAM_SET = "mtgSet"
-        fun newInstance(character: MtgSet): SetContentFragment = SetContentFragment().apply {
-            arguments = Bundle().apply { putParcelable(PARAM_SET, character) }
+        fun newInstance(mtgSet: MtgSet): SetContentFragment = SetContentFragment().apply {
+            arguments = Bundle().apply { putParcelable(PARAM_SET, mtgSet) }
         }
     }
 }

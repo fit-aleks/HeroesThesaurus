@@ -74,10 +74,10 @@ class SetsListAdapter(private val mDataset: MutableList<MtgSet>) : RecyclerView.
     }
 
     class CharacterViewHolder(v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
-        val mImageView: ImageView by lazy { v.findViewById(R.id.img) as ImageView }
-        val mDescription: TextView by lazy { v.findViewById(R.id.description) as TextView }
-        val mName: TextView by lazy { v.findViewById(R.id.name) as TextView }
-        val releaseDate: TextView by lazy { v.findViewById(R.id.set_release_date) as TextView }
+        val mImageView: ImageView by lazy { v.findViewById<ImageView>(R.id.img) }
+        val mDescription: TextView by lazy { v.findViewById<TextView>(R.id.description) }
+        val mName: TextView by lazy { v.findViewById<TextView>(R.id.name) }
+        val releaseDate: TextView by lazy { v.findViewById<TextView>(R.id.set_release_date) }
         var mtgSet: MtgSet? = null
 
         init {

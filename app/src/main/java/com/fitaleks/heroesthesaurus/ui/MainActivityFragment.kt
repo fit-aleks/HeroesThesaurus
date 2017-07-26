@@ -20,12 +20,8 @@ import java.util.*
 
 class MainActivityFragment : LifecycleFragment() {
 
-    private val charactersRecyclerView: RecyclerView by lazy {
-        view?.findViewById(R.id.recycler_view) as RecyclerView
-    }
-    private val swipeRefresh: SwipeRefreshLayout by lazy {
-        view?.findViewById(R.id.swipe_refresh) as SwipeRefreshLayout
-    }
+    private lateinit var charactersRecyclerView : RecyclerView
+    private lateinit var swipeRefresh: SwipeRefreshLayout
 
     private var mAdapter: SetsListAdapter = SetsListAdapter(ArrayList<MtgSet>()).apply { setUseCharOfDay(true) }
     private var mLinearLayoutManager: LinearLayoutManager? = null
@@ -70,7 +66,10 @@ class MainActivityFragment : LifecycleFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        val rootView = inflater.inflate(R.layout.fragment_main, container, false)
+        charactersRecyclerView = rootView.findViewById<RecyclerView>(R.id.recycler_view)
+        swipeRefresh = rootView.findViewById<SwipeRefreshLayout>(R.id.swipe_refresh)
+        return rootView
     }
 
     private val TAG: String = MainActivityFragment::class.java.simpleName
@@ -84,24 +83,21 @@ class MainActivityFragment : LifecycleFragment() {
         charactersRecyclerView.adapter = mAdapter
         swipeRefresh.isEnabled = false
 
-        val appBarView: AppBarLayout? = activity.findViewById(R.id.appbar) as AppBarLayout
+        val appBarView: AppBarLayout = activity.findViewById<AppBarLayout>(R.id.appbar)
         charactersRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                 if (charactersRecyclerView.computeVerticalScrollOffset() == 0) {
-                    appBarView?.elevation = 0f
+                    appBarView.elevation = 0f
                 } else {
-                    appBarView?.elevation = resources.getDimension(R.dimen.appbar_elevation)
+                    appBarView.elevation = resources.getDimension(R.dimen.appbar_elevation)
                 }
             }
         })
 
-//        val charactersViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
-//        charactersViewModel.getCharactersData()?.observe(this, android.arch.lifecycle.Observer { t -> t?.let { mAdapter.addCharacters(it) } })
-
         val setsViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
         val listOfAllIcons = resources.assets.list(PATH_TO_ICONS)
-        setsViewModel.getSets().observe(this, android.arch.lifecycle.Observer { t ->
-            t?.filter { set ->
+        setsViewModel.getSets().observe(this, android.arch.lifecycle.Observer { sets ->
+            sets?.filter { set ->
                 if (!listOfAllIcons.contains(set.imageName())) {
                     Log.d(TAG, "${set.imageName()} has no icon")
                 }

@@ -2,6 +2,7 @@ package com.fitaleks.heroesthesaurus.ui
 
 import android.os.Bundle
 import android.support.design.widget.CollapsingToolbarLayout
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import com.fitaleks.heroesthesaurus.R
@@ -27,12 +28,12 @@ class SetContentActivity : AppCompatActivity() {
     }
 
     private fun setupAppbar() {
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        val collapsingToolbar = findViewById(R.id.collapsing_toolbar_layout) as CollapsingToolbarLayout
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val collapsingToolbar = findViewById<CollapsingToolbarLayout>(R.id.collapsing_toolbar_layout)
         setSupportActionBar(toolbar)
 
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        collapsingToolbar.setExpandedTitleColor(resources.getColor(android.R.color.transparent))
+        collapsingToolbar.setExpandedTitleColor(ContextCompat.getColor(this, android.R.color.transparent))
     }
 }

@@ -19,8 +19,8 @@ class DetailsAdapter : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() 
     private var listOfComics: List<MtgCard>? = null
 
     class DetailsViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val mName by lazy { v.findViewById(R.id.title) as TextView }
-        val img by lazy { v.findViewById(R.id.cover) as ImageView }
+        val mName by lazy { v.findViewById<TextView>(R.id.title) }
+        val img by lazy { v.findViewById<ImageView>(R.id.cover) }
     }
 
     override fun getItemCount(): Int = listOfComics?.size ?: 0

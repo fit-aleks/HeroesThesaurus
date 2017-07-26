@@ -7,14 +7,14 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.fitaleks.heroesthesaurus.R
 import com.fitaleks.heroesthesaurus.util.addFragmentToActivity
 
 class MainActivity : AppCompatActivity() {
 
     private val RC_SEARCH = 42
-//    private var charactersPresenter: CharactersPresenter? = null
-    private val toolbar: Toolbar by lazy { findViewById(R.id.toolbar) as Toolbar }
+    private val toolbar: Toolbar by lazy { findViewById<Toolbar>(R.id.toolbar) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +26,6 @@ class MainActivity : AppCompatActivity() {
             fragment = MainActivityFragment.newInstance()
             addFragmentToActivity(fragment, R.id.contentFrame)
         }
-
-//        charactersPresenter = CharactersPresenter(CharactersRepository.instance(CharactersRemoteDataSource.instance,
-//                CharatersLocalDataSource(this, SchedulerProvider.instance)),
-//                fragment,
-//                SchedulerProvider.instance)
 
     }
 
@@ -46,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         if (item.itemId == R.id.menu_search) {
-            val searchMenuView = toolbar.findViewById(R.id.menu_search)
+            val searchMenuView = toolbar.findViewById<View>(R.id.menu_search)
             val options = ActivityOptions.makeSceneTransitionAnimation(this, searchMenuView,
                     getString(R.string.transition_search_back)).toBundle()
             startActivityForResult(Intent(this, SearchActivity::class.java), RC_SEARCH, options)
