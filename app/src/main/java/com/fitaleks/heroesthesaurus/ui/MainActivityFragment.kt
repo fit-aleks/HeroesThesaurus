@@ -108,6 +108,7 @@ class MainActivityFragment : LifecycleFragment() {
 
                 set.type != "promo" && set.type != "reprint" && set.type != "box" && listOfAllIcons.contains(set.imageName())
             }
+                    ?.sortedByDescending { it.releaseDate }
                     ?.let {
                         Log.d(TAG, "num of elems = ${it.size}")
                         mAdapter.addCharacters(it)

@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/img"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="@dimen/small_vertical_margin"
             android:layout_marginTop="@dimen/small_vertical_margin" />
@@ -25,6 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceLarge"
+            android:layout_marginBottom="@dimen/line_spacing_margin"
             android:textStyle="bold"
             tools:text="Hero of the Day - Spider Man!" />
 
@@ -32,11 +33,19 @@
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/small_vertical_margin"
+            android:layout_marginBottom="@dimen/line_spacing_margin"
             android:ellipsize="end"
             android:maxLines="3"
             android:textAppearance="?android:textAppearanceMedium"
             tools:text="Bitten by a radioactive spider, high school student Peter Parker gained the speed, strength and powers of a spider. Adopting the name Spider-Man, Peter hoped to start a career using his new abilities. Taught that with great power comes great responsibility, Spidey has vowed to use his powers to help people." />
+
+        <TextView
+            android:id="@+id/set_release_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/small_vertical_margin"
+            android:textAppearance="?android:textAppearanceMedium"
+            tools:text="2014-09-26" />
 
     </LinearLayout>
 

@@ -9,7 +9,9 @@
     <string name="pref_loaded_num_of_characters">loaded_num_of_characters</string>
 
     <string name="search">Search</string>
-    <string name="hero_of_the_day">Hero of the day - %1$s!</string>
+    <string name="hero_of_the_day">The latest set - %1$s!</string>
+    <string name="set_block">Part of the block - %1$s</string>
+    <string name="set_release_date">Release date - %1$s</string>
 
     <!-- transition shared elements -->
     <string name="transition_search_back" translatable="false">transition_search_back</string>

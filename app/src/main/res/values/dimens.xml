@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="small_vertical_margin">8dp</dimen>
+    <dimen name="line_spacing_margin">4dp</dimen>
 
 
     <dimen name="spacing_huge">64dp</dimen>

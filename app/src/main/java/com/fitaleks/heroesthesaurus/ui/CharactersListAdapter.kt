@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide
 import com.fitaleks.heroesthesaurus.FULL_PATH_TO_ICONS
 import com.fitaleks.heroesthesaurus.R
 import com.fitaleks.heroesthesaurus.data.MtgSet
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * Created by alexanderkulikovskiy on 20.06.15.
@@ -20,6 +22,7 @@ class CharactersListAdapter(private val mDataset: MutableList<MtgSet>) : Recycle
     private val VIEW_TYPE_CHARACTER = 1
 
     private var useCharOfDay = false
+    private val releaseDateTextFormatter = SimpleDateFormat("dd MMMM, yyyy", Locale.getDefault())
 
     fun setUseCharOfDay(isUsing: Boolean) {
         useCharOfDay = isUsing
@@ -27,9 +30,9 @@ class CharactersListAdapter(private val mDataset: MutableList<MtgSet>) : Recycle
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
         val characterLayout: Int = if (viewType == VIEW_TYPE_CHARACTER_Of_THE_DAY) {
-            R.layout.item_character_of_the_day
+            R.layout.item_latest_set
         } else {
-            R.layout.character_item_photo
+            R.layout.item_set
         }
         val view = LayoutInflater.from(parent.context).inflate(characterLayout, parent, false)
         return CharacterViewHolder(view)
@@ -43,9 +46,12 @@ class CharactersListAdapter(private val mDataset: MutableList<MtgSet>) : Recycle
             holder.mName.text = mtgSet.name
         }
         holder.mtgSet = mtgSet
-        holder.mDescription.text = mtgSet.name
+        holder.mDescription.text = holder.mDescription.context.getString(R.string.set_block, mtgSet.block)
+
+        holder.releaseDate.text = holder.releaseDate.context.getString(R.string.set_release_date, releaseDateTextFormatter.format(mtgSet.releaseDate))
         Glide.with(holder.mImageView.context)
                 .load("$FULL_PATH_TO_ICONS${mtgSet.imageName()}")
+                .fitCenter()
                 .into(holder.mImageView)
     }
 
@@ -71,6 +77,7 @@ class CharactersListAdapter(private val mDataset: MutableList<MtgSet>) : Recycle
         val mImageView: ImageView by lazy { v.findViewById(R.id.img) as ImageView }
         val mDescription: TextView by lazy { v.findViewById(R.id.description) as TextView }
         val mName: TextView by lazy { v.findViewById(R.id.name) as TextView }
+        val releaseDate: TextView by lazy { v.findViewById(R.id.set_release_date) as TextView }
         var mtgSet: MtgSet? = null
 
         init {

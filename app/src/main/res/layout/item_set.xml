@@ -17,12 +17,13 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/line_spacing_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_toEndOf="@id/img"
+        android:textAppearance="?android:textAppearanceMedium"
         android:textStyle="bold"
-        tools:text="Spider Man" />
+        tools:text="Khans of Tarkir" />
 
     <TextView
         android:id="@+id/description"
@@ -30,10 +31,22 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/name"
         android:layout_below="@id/name"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:layout_marginBottom="@dimen/line_spacing_margin"
         android:layout_marginEnd="@dimen/activity_horizontal_margin"
         android:ellipsize="end"
         android:maxLines="3"
-        tools:text="Bitten by a radioactive spider, high school student Peter Parker gained the speed, strength and powers of a spider. Adopting the name Spider-Man, Peter hoped to start a career using his new abilities. Taught that with great power comes great responsibility, Spidey has vowed to use his powers to help people." />
+        android:textAppearance="?android:textAppearanceSmall"
+        tools:text="Block: Khans of Tarkir" />
+
+    <TextView
+        android:id="@+id/set_release_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/name"
+        android:layout_below="@id/description"
+        android:layout_marginBottom="@dimen/line_spacing_margin"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin"
+        android:textAppearance="?android:textAppearanceSmall"
+        tools:text="2014-09-26" />
 
 </RelativeLayout>
