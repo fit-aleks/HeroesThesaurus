@@ -27,6 +27,9 @@
             android:name=".ui.SetContentActivity"
             android:parentActivityName=".ui.MainActivity"
             android:theme="@style/AppTheme.Details" />
+
+        <activity android:name=".ui.ImageActivity"
+            android:theme="@style/AppTheme.Translucent.Image"/>
     </application>
 
 </manifest>

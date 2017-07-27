@@ -1,0 +1,16 @@
+<com.fitaleks.heroesthesaurus.ui.widget.ElasticDragDismissFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                                      xmlns:tools="http://schemas.android.com/tools"
+                                                                      android:id="@+id/draggable_frame"
+                                                                      android:layout_width="match_parent"
+                                                                      android:layout_height="match_parent"
+                                                                      android:background="@android:color/black">
+
+    <ImageView
+        android:id="@+id/fragment_full_screen_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:transitionName="card_image"
+        tools:ignore="ContentDescription"/>
+
+</com.fitaleks.heroesthesaurus.ui.widget.ElasticDragDismissFrameLayout>

@@ -10,7 +10,7 @@
 
     <string name="search">Search</string>
     <string name="hero_of_the_day">The latest set - %1$s!</string>
-    <string name="set_block">Part of the block - %1$s</string>
+    <!--<string name="set_block">Block - <b>%1$s</b></string>-->
     <string name="set_release_date">Release date - %1$s</string>
 
     <!-- transition shared elements -->

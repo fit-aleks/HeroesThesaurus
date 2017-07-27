@@ -3,8 +3,10 @@ package com.fitaleks.heroesthesaurus.ui
 import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -26,7 +28,14 @@ class SetContentFragment : LifecycleFragment() {
         return inflater.inflate(R.layout.fragment_character_details, container, false)
     }
 
-    private val adapter = DetailsAdapter()
+    private val adapter = DetailsAdapter(object : DetailsAdapter.OnCardClickListener {
+        override fun onClick(imageUrl: String, imageView: ImageView) {
+            val intent = Intent(context, ImageActivity::class.java)
+            intent.putExtra(ImageActivity.PARAM_URL, imageUrl)
+
+            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, imageView, "card_image").toBundle())
+        }
+    })
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

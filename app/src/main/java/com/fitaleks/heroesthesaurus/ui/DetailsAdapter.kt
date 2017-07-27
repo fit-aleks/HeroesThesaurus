@@ -14,16 +14,16 @@ import com.fitaleks.heroesthesaurus.data.MtgCard
 /**
  * Created by Alexander on 19.06.17.
  */
-class DetailsAdapter : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() {
+class DetailsAdapter(val clickListener: OnCardClickListener) : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() {
 
-    private var listOfComics: List<MtgCard>? = null
+    private var listOfCards: List<MtgCard>? = null
 
     class DetailsViewHolder(v: View) : RecyclerView.ViewHolder(v) {
         val mName by lazy { v.findViewById<TextView>(R.id.title) }
         val img by lazy { v.findViewById<ImageView>(R.id.cover) }
     }
 
-    override fun getItemCount(): Int = listOfComics?.size ?: 0
+    override fun getItemCount(): Int = listOfCards?.size ?: 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DetailsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_comics, parent, false)
@@ -31,20 +31,28 @@ class DetailsAdapter : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() 
     }
 
     override fun onBindViewHolder(holder: DetailsViewHolder, position: Int) {
-        holder.mName.text = listOfComics?.get(position)?.name ?: ""
+        holder.mName.text = listOfCards?.get(position)?.name ?: ""
+//        holder.cardUrl = listOfCards?.get(position)?.imageUrl
         Glide.with(holder.img.context)
-                .load(listOfComics?.get(position)?.imageUrl)
+                .load(listOfCards?.get(position)?.imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .into(holder.img)
+        holder.itemView.setOnClickListener {
+            clickListener.onClick(listOfCards?.get(position)?.imageUrl ?: "", holder.img)
+        }
     }
 
     fun replaceDataWith(cards: List<MtgCard>) {
-        listOfComics = cards
+        listOfCards = cards
         notifyDataSetChanged()
     }
 
     fun clear() {
-        listOfComics = null
+        listOfCards = null
         notifyDataSetChanged()
+    }
+
+    interface OnCardClickListener {
+        fun onClick(imageUrl: String, imageView: ImageView)
     }
 }

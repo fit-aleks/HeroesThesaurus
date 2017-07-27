@@ -46,7 +46,8 @@ class SetsListAdapter(private val mDataset: MutableList<MtgSet>) : RecyclerView.
             holder.mName.text = mtgSet.name
         }
         holder.mtgSet = mtgSet
-        holder.mDescription.text = holder.mDescription.context.getString(R.string.set_block, mtgSet.block)
+        mtgSet.block?.let { holder.mDescription.text = mtgSet.block }
+
 
         holder.releaseDate.text = holder.releaseDate.context.getString(R.string.set_release_date, releaseDateTextFormatter.format(mtgSet.releaseDate))
         Glide.with(holder.mImageView.context)

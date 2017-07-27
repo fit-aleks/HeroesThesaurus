@@ -13,6 +13,7 @@ import android.transition.TransitionSet
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.SearchView
 import com.fitaleks.heroesthesaurus.R
 import com.fitaleks.heroesthesaurus.data.MtgCard
@@ -29,7 +30,11 @@ class SearchActivity : LifecycleActivity() {
     private val searchBack: ImageButton by lazy { findViewById<ImageButton>(R.id.searchback) }
     private val searchView: SearchView by lazy { findViewById<SearchView>(R.id.search_view) }
     private val recyclerView: RecyclerView by lazy { findViewById<RecyclerView>(R.id.search_results) }
-    private val adapter = DetailsAdapter()
+    private val adapter = DetailsAdapter(object : DetailsAdapter.OnCardClickListener {
+        override fun onClick(imageUrl: String, imageView: ImageView) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+    })
     private val viewModel by lazy {
         ViewModelProviders.of(this).get(CharactersViewModel::class.java)
     }

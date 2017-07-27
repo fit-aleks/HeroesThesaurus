@@ -41,6 +41,14 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
+    <style name="AppTheme.Translucent.Image">
+        <item name="android:windowAnimationStyle">@style/SearchWindowAnimations</item>
+
+        <item name="android:windowSharedElementEnterTransition">@transition/image_shared_enter</item>
+        <item name="android:windowSharedElementReturnTransition">@transition/image_shared_return</item>
+        <item name="android:windowSharedElementsUseOverlay">true</item>
+    </style>
+
     <style name="SearchWindowAnimations">
         <item name="android:windowEnterAnimation">@null</item>
         <item name="android:windowExitAnimation">@anim/fade_out_rapidly</item>
