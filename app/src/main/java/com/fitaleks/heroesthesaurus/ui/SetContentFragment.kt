@@ -1,12 +1,12 @@
 package com.fitaleks.heroesthesaurus.ui
 
-import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.app.ActivityOptionsCompat
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -22,7 +22,7 @@ import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
 /**
  * Created by Alexander on 19.06.17.
  */
-class SetContentFragment : LifecycleFragment() {
+class SetContentFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_character_details, container, false)
@@ -33,7 +33,9 @@ class SetContentFragment : LifecycleFragment() {
             val intent = Intent(context, ImageActivity::class.java)
             intent.putExtra(ImageActivity.PARAM_URL, imageUrl)
 
-            startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(activity, imageView, "card_image").toBundle())
+            activity?.let {
+                startActivity(intent, ActivityOptionsCompat.makeSceneTransitionAnimation(it, imageView, "card_image").toBundle())
+            }
         }
     })
 
@@ -50,24 +52,32 @@ class SetContentFragment : LifecycleFragment() {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
                         && layoutManager.findFirstCompletelyVisibleItemPosition() == 0) {
-                    (activity.findViewById<AppBarLayout>(R.id.appbar)).setExpanded(true)
+                    activity?.let {
+                        (it.findViewById<AppBarLayout>(R.id.appbar)).setExpanded(true)
+                    }
                 }
             }
         })
-        val mtgSet = arguments.getParcelable<MtgSet>(PARAM_SET)
-        val appbarImageView = activity.findViewById<ImageView>(R.id.details_appbar_image)
-        Glide.with(this)
-                .load(mtgSet.imageName())
-                .into(appbarImageView)
-        (activity as AppCompatActivity).supportActionBar?.title = mtgSet.name
 
-        val comicsViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
-        comicsViewModel.getCharactersData(mtgSet.code)
-                ?.observe(this, Observer { t ->
-                    t?.let {
-                        adapter.replaceDataWith(t)
-                    }
-                })
+        arguments?.let { args ->
+            val mtgSet = args.getParcelable<MtgSet>(PARAM_SET)
+            activity?.let {
+                val appbarImageView = it.findViewById<ImageView>(R.id.details_appbar_image)
+                Glide.with(this)
+                        .load(mtgSet.imageName())
+                        .into(appbarImageView)
+                (activity as AppCompatActivity).supportActionBar?.title = mtgSet.name
+                val comicsViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
+                comicsViewModel.getCharactersData(mtgSet.code)
+                        ?.observe(this, Observer { t ->
+                            t?.let {
+                                adapter.replaceDataWith(t)
+                            }
+                        })
+            }
+
+        }
+
     }
 
     companion object {

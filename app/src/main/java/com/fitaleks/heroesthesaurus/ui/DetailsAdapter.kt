@@ -14,13 +14,13 @@ import com.fitaleks.heroesthesaurus.data.MtgCard
 /**
  * Created by Alexander on 19.06.17.
  */
-class DetailsAdapter(val clickListener: OnCardClickListener) : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() {
+class DetailsAdapter(private val clickListener: OnCardClickListener) : RecyclerView.Adapter<DetailsAdapter.DetailsViewHolder>() {
 
     private var listOfCards: List<MtgCard>? = null
 
     class DetailsViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val mName by lazy { v.findViewById<TextView>(R.id.title) }
-        val img by lazy { v.findViewById<ImageView>(R.id.cover) }
+        val mName: TextView by lazy { v.findViewById<TextView>(R.id.title) }
+        val img: ImageView by lazy { v.findViewById<ImageView>(R.id.cover) }
     }
 
     override fun getItemCount(): Int = listOfCards?.size ?: 0
@@ -32,7 +32,6 @@ class DetailsAdapter(val clickListener: OnCardClickListener) : RecyclerView.Adap
 
     override fun onBindViewHolder(holder: DetailsViewHolder, position: Int) {
         holder.mName.text = listOfCards?.get(position)?.name ?: ""
-//        holder.cardUrl = listOfCards?.get(position)?.imageUrl
         Glide.with(holder.img.context)
                 .load(listOfCards?.get(position)?.imageUrl)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)

@@ -55,7 +55,7 @@ class ImageActivity : AppCompatActivity(), ElasticDragDismissFrameLayout.Callbac
 
     }
 
-    override fun onPull(p0: Float) {
+    override fun onPull(progress: Float) {
 
     }
 

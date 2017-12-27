@@ -1,9 +1,9 @@
 package com.fitaleks.heroesthesaurus.ui
 
-import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -18,7 +18,7 @@ import com.fitaleks.heroesthesaurus.data.MtgSet
 import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
 import java.util.*
 
-class MainActivityFragment : LifecycleFragment() {
+class MainActivityFragment : Fragment() {
 
     private lateinit var charactersRecyclerView : RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
@@ -33,9 +33,6 @@ class MainActivityFragment : LifecycleFragment() {
     private var totalItemCount: Int = 0
 
     private val listen = object : RecyclerView.OnScrollListener() {
-        override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-            super.onScrollStateChanged(recyclerView, newState)
-        }
 
         override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
             super.onScrolled(recyclerView, dx, dy)
@@ -60,10 +57,6 @@ class MainActivityFragment : LifecycleFragment() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_main, container, false)
@@ -74,7 +67,7 @@ class MainActivityFragment : LifecycleFragment() {
 
     private val TAG: String = MainActivityFragment::class.java.simpleName
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mLinearLayoutManager = LinearLayoutManager(activity)
         charactersRecyclerView.layoutManager = mLinearLayoutManager
@@ -83,16 +76,18 @@ class MainActivityFragment : LifecycleFragment() {
         charactersRecyclerView.adapter = mAdapter
         swipeRefresh.isEnabled = false
 
-        val appBarView: AppBarLayout = activity.findViewById<AppBarLayout>(R.id.appbar)
-        charactersRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                if (charactersRecyclerView.computeVerticalScrollOffset() == 0) {
-                    appBarView.elevation = 0f
-                } else {
-                    appBarView.elevation = resources.getDimension(R.dimen.appbar_elevation)
+        activity?.let {
+            val appBarView: AppBarLayout = it.findViewById(R.id.appbar)
+            charactersRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                    if (charactersRecyclerView.computeVerticalScrollOffset() == 0) {
+                        appBarView.elevation = 0f
+                    } else {
+                        appBarView.elevation = resources.getDimension(R.dimen.appbar_elevation)
+                    }
                 }
-            }
-        })
+            })
+        }
 
         val setsViewModel = ViewModelProviders.of(this).get(CharactersViewModel::class.java)
         val listOfAllIcons = resources.assets.list(PATH_TO_ICONS)
@@ -110,11 +105,6 @@ class MainActivityFragment : LifecycleFragment() {
                         mAdapter.addCharacters(it)
                     }
         })
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
     }
 
     override fun onDestroyView() {

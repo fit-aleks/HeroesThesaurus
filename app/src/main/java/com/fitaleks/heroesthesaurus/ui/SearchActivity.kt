@@ -1,10 +1,10 @@
 package com.fitaleks.heroesthesaurus.ui
 
 import android.app.SharedElementCallback
-import android.arch.lifecycle.LifecycleActivity
 import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Point
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.InputType
@@ -25,7 +25,7 @@ import com.fitaleks.heroesthesaurus.viewmodel.CharactersViewModel
 /**
  * Created by Alexander on 02.12.16.
  */
-class SearchActivity : LifecycleActivity() {
+class SearchActivity : AppCompatActivity() {
 
     private val searchBack: ImageButton by lazy { findViewById<ImageButton>(R.id.searchback) }
     private val searchView: SearchView by lazy { findViewById<SearchView>(R.id.search_view) }
